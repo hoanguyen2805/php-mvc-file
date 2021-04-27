@@ -412,6 +412,51 @@ class User
             File::deleteLine("assets/files/users.txt", $user, $index, $size);
         }
     }
+
+    /**
+     *
+     * Hoa
+     * Created at 24-04-2021 16h20
+     * paginate with email | username
+     *
+     */
+    static function paginate($page, $key)
+    {
+        $index = ($page - 1) * 5;
+        $listUsers = User::getUsersByString($key);
+        return array_slice($listUsers, $index, 5);
+    }
+
+    /**
+     *
+     * Hoa
+     * Created at 24-04-2021 14h30
+     * get list users by comparing key with email or username
+     *
+     */
+    static function getUsersByString($key)
+    {
+        if ($key != "") {
+            if (file_exists("assets/files/users.txt")) {
+                $file = fopen("assets/files/users.txt", "r");
+                $list = array();
+                while (!feof($file)) {
+                    $arr = explode(",", fgets($file));
+                    //không set != false được vì nếu tìm thấy chuỗi ở vị trí 0 thì nó trả về 0, mà false = 0 nên chạy sai
+                    //dùng !== để so sánh kiểu dữ liệu
+                    if (strpos($arr[1], $key) !== false || strpos($arr[2], $key) !== false) {
+                        array_push($list, $arr);
+                    }
+                }
+                fclose($file);
+                return $list;
+            } else {
+                return null;
+            }
+        } else {
+            return User::getListUsers();
+        }
+    }
 }
 
 ?>

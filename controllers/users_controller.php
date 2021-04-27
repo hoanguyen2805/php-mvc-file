@@ -289,8 +289,19 @@ class UsersController extends BaseController
         if (isset($_SESSION['user'])) {
             $role = $_SESSION["role"];
             if ($role == 1) {
-                $listUsers = User::getListUsers();
-                $data = array('listUsers' => $listUsers);
+                $page = 1;
+                $key = "";
+                if (!empty($_GET['page'])) {
+                    $page = $_GET['page'];
+                }
+                if (!empty($_GET['key'])) {
+                    $key = $_GET['key'];
+                }
+                $listUsers = User::paginate($page, trim($key));
+                $size = count(User::getUsersByString(trim($key)));
+                $totalPages = ceil($size/5);
+                echo "size: $size, pages: $totalPages";
+                $data = array('listUsers' => $listUsers, 'totalPages' => $totalPages);
                 $this->render("list", $data);
             } else {
                 echo "<script>
@@ -332,6 +343,23 @@ class UsersController extends BaseController
         }
     }
 
+    /**
+     *
+     * Hoa
+     * Created at 24-04-2021 13h40
+     * handling form search username | email
+     *
+     */
+    public function formSearch()
+    {
+        if (isset($_POST['search'])) {
+            if ($_POST['key'] == "") {
+                header("location:index.php?controller=users&action=listUsers");
+            } else {
+                header("location:index.php?controller=users&action=listUsers&page=1&key=" . $_POST['key']);
+            }
+        }
+    }
 }
 
 ?>

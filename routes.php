@@ -18,7 +18,8 @@ $controllers = array(
         'resetPasswordForm',
         'signOut',
         'listUsers',
-        'deleteUser'
+        'deleteUser',
+        'formSearch',
     ],
     'products' => ['index', 'showPost', 'list', 'add', 'update', 'delete'],
 );
