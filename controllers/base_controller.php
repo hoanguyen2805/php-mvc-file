@@ -1,4 +1,5 @@
 <?php
+require_once('models/product.php');
 
 class BaseController
 {
@@ -17,10 +18,11 @@ class BaseController
             require_once($view_file);
             $content = ob_get_clean();
             // Sau khi có kết quả đã được lưu vào biến $content, gọi ra template chung của hệ thống đế hiển thị ra cho người dùng
+            $categories = Product::getCategories();
             require_once('views/layouts/application.php');
         } else {
             // Nếu file muốn gọi ra không tồn tại thì chuyển hướng đến trang báo lỗi.
-            header('Location: index.php?controller=pages&action=error');
+            header('Location: index.php?controller=users&action=error');
         }
     }
 }

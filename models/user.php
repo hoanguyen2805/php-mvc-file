@@ -115,7 +115,7 @@ class User
     /**
      *
      * Hoa
-     * Created at 22-04-2021 9h:10
+     * Created at 22-04-2021 09h:10
      * upload avatar to images folder
      *
      */

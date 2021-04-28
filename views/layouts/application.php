@@ -22,9 +22,11 @@
     <div class="dropdown">
         <button class="dropbtn">Categories <i class="fa fa-caret-down"></i></button>
         <div class="dropdown-content">
-            <a href="">Smart Phone</a>
-            <a href="">Tablet</a>
-            <a href="">Laptop</a>
+            <?php
+            foreach ($categories as $category) {
+                echo "  <a href=\"index.php\">$category[1]</a>";
+            }
+            ?>
         </div>
     </div>
     <?php
@@ -35,8 +37,12 @@
         echo "<a href=\"index.php?controller=users\"><i class=\"fa fa-user\" aria-hidden=\"true\"></i> My Account</a>";
         if (isset($_SESSION['role'])) {
             if ($_SESSION['role'] == 1) {
-                echo "<a href=\"index.php?controller=users&action=listUsers\"><i class=\"fa fa-users\" aria-hidden=\"true\"></i> Manage
-        users</a>";
+                echo "<a href=\"index.php?controller=users&action=listUsers\">
+                        <i class=\"fa fa-users\" aria-hidden=\"true\"></i> Manage users
+                      </a>";
+                echo "<a href=\"index.php?controller=products&action=manageProduct\">
+                        <i class=\"fa fa-product-hunt\" aria-hidden=\"true\"></i> Manage products
+                      </a>";
             }
         }
         echo "<a href=\"index.php?controller=users&action=signOut\"><i class=\"fa fa-sign-out\" aria-hidden=\"true\"></i> Sign Out</a>";

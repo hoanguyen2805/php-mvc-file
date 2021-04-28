@@ -69,9 +69,9 @@ class UsersController extends BaseController
                 $data = array(
                     'notify' => $_GET['notify'],
                 );
-                $this->render('sign_up', $data);
+                $this->render('sign-up', $data);
             }
-            $this->render('sign_up');
+            $this->render('sign-up');
         }
     }
 
@@ -119,9 +119,9 @@ class UsersController extends BaseController
                 $data = array(
                     'notify' => $_GET['notify'],
                 );
-                $this->render('sign_in', $data);
+                $this->render('sign-in', $data);
             }
-            $this->render('sign_in');
+            $this->render('sign-in');
         }
 
     }
@@ -183,9 +183,9 @@ class UsersController extends BaseController
                 $data = array(
                     'notify' => $_GET['notify'],
                 );
-                $this->render('forgot_password', $data);
+                $this->render('forgot-password', $data);
             }
-            $this->render('forgot_password');
+            $this->render('forgot-password');
         }
     }
 
@@ -232,9 +232,9 @@ class UsersController extends BaseController
                 $data = array(
                     'notify' => $_GET['notify'],
                 );
-                $this->render('reset_password', $data);
+                $this->render('reset-password', $data);
             }
-            $this->render('reset_password');
+            $this->render('reset-password');
         }
     }
 

@@ -21,7 +21,7 @@ $controllers = array(
         'deleteUser',
         'formSearch',
     ],
-    'products' => ['index', 'list', 'add', 'update', 'delete'],
+    'products' => ['index', 'manageProduct', 'add', 'addProductForm', 'update', 'delete'],
 );
 
 /**

@@ -50,7 +50,7 @@ select {
     margin: 0;
     padding: 0;
     border-radius: 0;
-    -webkit-appearance: none;
+    /*-webkit-appearance: none;*/
 }
 
 button {
@@ -360,6 +360,8 @@ div.blueTable {
 
 .divTableCell, .divTableHead {
     display: table-cell;
+    vertical-align: middle;
+    text-align: center;
 }
 
 .divTableHeading {
@@ -533,7 +535,21 @@ body {
     }
 }
 
-
+.add-product{
+    /*padding: 20px 30px;*/
+    background-color: #2196F3;
+    color: white;
+    font-weight: bold;
+    display: block;
+    line-height: 50px;
+    height: 50px;
+    width: 150px;
+    margin: 20px auto;
+    text-align: center;
+}
+.add-product:hover{
+    background-color: #0b7dda;
+}
 @media (max-width: 575.98px) {
     .container{
         width: 85%;
