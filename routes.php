@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Các controllers trong hệ thống [pages và posts] và các action có thể gọi ra từ controller đó.
+ * Các controllers trong hệ thống [users và products] và các action có thể gọi ra từ controller đó.
  *
  */
 $controllers = array(
@@ -21,7 +21,7 @@ $controllers = array(
         'deleteUser',
         'formSearch',
     ],
-    'products' => ['index', 'showPost', 'list', 'add', 'update', 'delete'],
+    'products' => ['index', 'list', 'add', 'update', 'delete'],
 );
 
 /**
@@ -38,19 +38,22 @@ if (!array_key_exists($controller, $controllers) || !in_array($action, $controll
     $action = 'error';
 }
 
-// Nhúng file định nghĩa controller vào để có thể dùng được class định nghĩa trong file đó
+/**
+ *
+ * Nhúng file định nghĩa controller vào để có thể dùng được class định nghĩa trong file đó
+ *
+ */
 include_once('controllers/' . $controller . '_controller.php');
 
 /**
  *
  * Tạo ra tên controller class từ các giá trị lấy được từ URL sau đó gọi ra để hiển thị trả về cho người dùng.
- * ucwords($controller, '_') VD: pages -> Pages_
- * str_replace('_', '', x) thay thế '_' bằng '' VD: Pages_ -> Pages
- * Pages.Controller -> PageController
+ * ucwords($controller, '_') VD: users -> Users_
+ * str_replace('_', '', x) thay thế '_' bằng '' VD: Users_ -> Users
+ * Users.Controller -> UsersController
  *
  */
 
 $klass = str_replace('_', '', ucwords($controller, '_')) . 'Controller';
 $controller = new $klass;
 $controller->$action();
-?>

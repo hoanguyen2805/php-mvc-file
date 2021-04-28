@@ -18,10 +18,30 @@
 </head>
 <body>
 <div class="topnav" id="myTopnav">
-    <a href="#home" class="active">Home</a>
-    <a href="#news">News</a>
-    <a href="#contact">Contact</a>
-    <a href="#about">About</a>
+    <a href="index.php?controller=products" class="active">Home</a>
+    <div class="dropdown">
+        <button class="dropbtn">Categories <i class="fa fa-caret-down"></i></button>
+        <div class="dropdown-content">
+            <a href="">Smart Phone</a>
+            <a href="">Tablet</a>
+            <a href="">Laptop</a>
+        </div>
+    </div>
+    <?php
+    if (!isset($_SESSION['user'])) {
+        echo " <a href=\"index.php?controller=users&action=signIn\"><i class=\"fa fa-sign-in\" aria-hidden=\"true\"></i> Sign In</a>";
+        echo "<a href=\"index.php?controller=users&action=signUp\"><i class=\"fa fa-user-plus\" aria-hidden=\"true\"></i> Sign Up</a>";
+    } else {
+        echo "<a href=\"index.php?controller=users\"><i class=\"fa fa-user\" aria-hidden=\"true\"></i> My Account</a>";
+        if (isset($_SESSION['role'])) {
+            if ($_SESSION['role'] == 1) {
+                echo "<a href=\"index.php?controller=users&action=listUsers\"><i class=\"fa fa-users\" aria-hidden=\"true\"></i> Manage
+        users</a>";
+            }
+        }
+        echo "<a href=\"index.php?controller=users&action=signOut\"><i class=\"fa fa-sign-out\" aria-hidden=\"true\"></i> Sign Out</a>";
+    }
+    ?>
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
     </a>

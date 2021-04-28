@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <div class="container" style="margin-top: 40px">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="text-center">
@@ -27,11 +27,11 @@
                                                type="email">
                                     </div>
                                     <br/>
-                                    <p class="error" id="err_email_forgot">Email không được để trống!</p>
+                                    <p class="error" id="err_email_forgot">Email is required!</p>
                                 </div>
                                 <?php
                                 if (isset($notify)) {
-                                    echo "<h3 style='color: red; text-align: center'>" . $notify . "</h3>";
+                                    echo "<p style='color: red; text-align: center'>" . $notify . "</p>";
                                 }
                                 ?>
                                 <div class="form-group">

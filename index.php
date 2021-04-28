@@ -3,9 +3,8 @@ require_once('connection.php');
 
 /**
  *
- * kiểm tra nếu tồn tại tham số controller thì get giá trị ra, không có thì gán mặc định controller = pages, action = home
- * lấy ra được controller thì kiểm tra nếu có action thì get tiếp action, không có thì gán mặc định action là index
- *
+ * kiểm tra nếu tồn tại tham số controller thì get giá trị ra, không có thì gán mặc định controller = products, action = index
+ * lấy ra được controller thì kiểm tra nếu có action thì get tiếp action, không có thì gán action mặc định là index
  *
  */
 if (isset($_GET['controller'])) {
@@ -16,8 +15,7 @@ if (isset($_GET['controller'])) {
         $action = 'index';
     }
 } else {
-    $controller = 'users';
+    $controller = 'products';
     $action = 'index';
 }
 require_once('routes.php');
-?>

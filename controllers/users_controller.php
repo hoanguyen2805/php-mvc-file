@@ -224,7 +224,7 @@ class UsersController extends BaseController
     {
         if (isset($_SESSION["user"])) {
             echo "<script>
-                          alert('Hãy đăng xuất khỏi tài khoản trước!');
+                          alert('Please Log out before using this feature!');
                           window.location.href='index.php?controller=users';
                   </script>";
         } else {
@@ -248,7 +248,7 @@ class UsersController extends BaseController
     public function resetPasswordForm()
     {
         if (empty($_GET['key']) || empty($_GET['token'])) {
-            $notify = "token và email không tồn tại!";
+            $notify = "Token and email do not exist!";
             header("location:index.php?controller=users&action=resetPassword&notify=$notify");
         } else {
             $email = $_GET['key'];
@@ -263,7 +263,7 @@ class UsersController extends BaseController
                 }
                 if ($newPassword) {
                     echo "<script>
-                            alert('Thành công! Hãy đăng nhập lại');
+                            alert('Success! Please Log in');
                             window.location.href='index.php?controller=users&action=signIn';
                           </script>";
                 } else {
@@ -299,13 +299,13 @@ class UsersController extends BaseController
                 }
                 $listUsers = User::paginate($page, trim($key));
                 $size = count(User::getUsersByString(trim($key)));
-                $totalPages = ceil($size/5);
-                echo "size: $size, pages: $totalPages";
+                $totalPages = ceil($size / 5);
+                //echo "size: $size, pages: $totalPages";
                 $data = array('listUsers' => $listUsers, 'totalPages' => $totalPages);
                 $this->render("list", $data);
             } else {
                 echo "<script>
-                            alert('Không có quyền truy cập!');
+                            alert('You are not permitted to use this feature!');
                             window.location.href='index.php?controller=users';
                       </script>";
             }
@@ -334,7 +334,7 @@ class UsersController extends BaseController
                 header("location:index.php?controller=users&action=listUsers");
             } else {
                 echo "<script>
-                            alert('Không có quyền truy xóa user!');
+                            alert('You are not permitted to use this feature!');
                             window.location.href='index.php?controller=users';
                       </script>";
             }
@@ -361,5 +361,3 @@ class UsersController extends BaseController
         }
     }
 }
-
-?>

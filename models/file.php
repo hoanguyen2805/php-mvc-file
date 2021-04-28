@@ -90,5 +90,3 @@ class File
         file_put_contents($url, $content);
     }
 }
-
-?>

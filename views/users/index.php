@@ -1,23 +1,14 @@
 <div class="container">
-    <h3>Xin chào <?= $fullName ?></h3>
+    <h2>User Information</h2>
     <div class="row">
         <div class="col">
-            <img src="<?= $urlAvatar ?>" alt="" width="100px">
+            <img src="<?= $urlAvatar ?>" alt="" width="130px">
         </div>
         <div class="col">
+            <p>Full Name: <?= $fullName ?></p>
             <p>Email: <?= $email ?></p>
             <p>Username: <?= $username ?></p>
-            <p>Ngày sinh: <?= $birthDay ?></p>
-            <?php
-            if ($role == 1) {
-                ?>
-                <p><a href="index.php?controller=users&action=listUsers">list users</a></p>
-                <?php
-            }
-            ?>
+            <p>Birthday: <?= $birthDay ?></p>
         </div>
     </div>
-    <a href="index.php?controller=users&action=signOut">
-        <button>LOG OUT</button>
-    </a>
 </div>

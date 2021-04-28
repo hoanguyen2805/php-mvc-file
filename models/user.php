@@ -44,11 +44,11 @@ class User
     static function signUp($fullName, $email, $username, $password, $birthDay)
     {
         if (User::isUsernameExists($username)) {
-            $_SESSION["signUpNotify"] = "Username đã tồn tại!";
+            $_SESSION["signUpNotify"] = "Username is already taken!";
             return false;
         }
         if (User::isEmailExists($email)) {
-            $_SESSION["signUpNotify"] = "Email đã tồn tại!";
+            $_SESSION["signUpNotify"] = "Email is already taken!";
             return false;
         }
         $urlAvatar = User::uploadAvatar();
@@ -56,7 +56,7 @@ class User
             return false;
         }
         File::writeFile("assets/files/users.txt", "$fullName,$email,$username,$password,$birthDay,$urlAvatar,0");
-        $_SESSION["signUpNotify"] = "Đăng ký thành công! Hãy đăng nhập";
+        $_SESSION["signUpNotify"] = "Registered successfully, please login!";
         return true;
     }
 
@@ -135,36 +135,36 @@ class User
         if ($check !== false) {
             $uploadOk = 1;
         } else {
-            $_SESSION["signUpNotify"] = "File không phải hình!";
+            $_SESSION["signUpNotify"] = "File is not an image!";
             $uploadOk = 0;
         }
 
         // Check if file already exists
         if (file_exists($target_file)) {
-            $_SESSION["signUpNotify"] = "File đã tồn tại!";
+            $_SESSION["signUpNotify"] = "File already exists!";
             $uploadOk = 0;
         }
 
         // Check file size
         if ($_FILES["avatar"]["size"] > 500000) {
-            $_SESSION["signUpNotify"] = "File quá lớn!";
+            $_SESSION["signUpNotify"] = "Sorry, your file is too large!";
             $uploadOk = 0;
         }
 
         // Allow certain file formats
         if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
             && $imageFileType != "gif") {
-            $_SESSION["signUpNotify"] = "Chỉ cho phép File có đuôi JPG, JPEG, PNG & GIF!";
+            $_SESSION["signUpNotify"] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed!";
             $uploadOk = 0;
         }
         if ($uploadOk == 0) {
             return false;
         } else {
             if (move_uploaded_file($_FILES["avatar"]["tmp_name"], $target_file)) {
-                echo "File " . htmlspecialchars(basename($_FILES["avatar"]["name"])) . " đã upload.";
+                echo "The File " . htmlspecialchars(basename($_FILES["avatar"]["name"])) . " has been uploaded.";
                 return $target_file;
             } else {
-                $_SESSION["signUpNotify"] = "Lỗi upload không xác định được!";
+                $_SESSION["signUpNotify"] = "Sorry, there was an error uploading your file.";
             }
         }
     }
@@ -179,11 +179,11 @@ class User
     static function signIn($username, $password)
     {
         if (trim($username) == "") {
-            $_SESSION["signInNotify"] = "username không được bỏ trống!";
+            $_SESSION["signInNotify"] = "The username field is required!";
             return false;
         }
         if (trim($password) == "") {
-            $_SESSION["signInNotify"] = "password không được bỏ trống!";
+            $_SESSION["signInNotify"] = "The password field is required!";
             return false;
         }
         if (file_exists('assets/files/users.txt')) {
@@ -197,16 +197,16 @@ class User
                         $_SESSION["role"] = $arr[6];
                         return true;
                     } else {
-                        $_SESSION["signInNotify"] = "Mật khẩu sai!";
+                        $_SESSION["signInNotify"] = "Password is incorrect!";
                         return false;
                     }
                 }
             }
             fclose($fileUser);
-            $_SESSION["signInNotify"] = "Không tìm thấy username!";
+            $_SESSION["signInNotify"] = "Username not found!";
             return false;
         } else {
-            $_SESSION["signInNotify"] = "File users không tồn tại!";
+            $_SESSION["signInNotify"] = "Users File does not exist!";
             return false;
         }
 
@@ -222,14 +222,14 @@ class User
     static function forgotPassword($email)
     {
         if (trim($email) == "") {
-            $_SESSION['forgotPasswordNotify'] = "Hãy nhập email!";
+            $_SESSION['forgotPasswordNotify'] = "Please enter your email!";
             return false;
         } else {
             if (User::isEmailExists($email)) {
                 User::sendEmail($email);
                 return true;
             } else {
-                $_SESSION['forgotPasswordNotify'] = "Không tìm thấy email!";
+                $_SESSION['forgotPasswordNotify'] = "Email not found!";
                 return false;
             }
         }
@@ -306,19 +306,18 @@ class User
          * $expDate = date("Y-m-d H:i:s", $expFormat);
          */
         $link = "<a href='http://localhost:8081/php-mvc-file/index.php?controller=users&action=resetPassword&key="
-            . $email . "&token=" . $token . "'>cài lại mật khẩu!</a>";
-        $title = 'Cài đặt lại mật khẩu!';     //chủ đề
-        $content = "<h3> Chào " . $arr[0] . "</h3>";
-        $content .= "<p>Gần đây, chúng tôi đã nhận được yêu cầu cấp lại mật khẩu của bạn.</p>";
-        $content .= "<p></p>";
-        $content .= "<p>Hãy click vào link bên dưới để đổi mật khẩu.</p>";
+            . $email . "&token=" . $token . "'>Click To Reset Your Password!</a>";
+        $title = 'Reset Your Password!';     //chủ đề
+        $content = "<h3> Dear " . $arr[0] . "</h3>";
+        $content .= "<p>We have received a request to re-issue your password recently.</p>";
+        $content .= "<p>Please click on the following link to reset your password.</p>";
         $content .= "<b>$link</b>";
         $sendMai = SendMail::send($title, $content, $arr[0], $email);
         if ($sendMai) {
             File::writeFile("assets/files/forgotPassword.txt", "$email,$token");
-            $_SESSION['forgotPasswordNotify'] = "Kiểm tra email của bạn để đổi mật khẩu!";
+            $_SESSION['forgotPasswordNotify'] = "Check your email to reset password!";
         } else {
-            $_SESSION['forgotPasswordNotify'] = 'Xảy ra lỗi không xác định!';
+            $_SESSION['forgotPasswordNotify'] = 'An error has occurred unable to retrieve the password!';
         }
     }
 
@@ -339,7 +338,7 @@ class User
                 File::updateLine("assets/files/users.txt", $oldUser, $newUser);
                 return true;
             } else {
-                $_SESSION['resetPasswordNotify'] = "Không tìm thấy user!";
+                $_SESSION['resetPasswordNotify'] = "User not found!";
                 return false;
             }
         }
@@ -368,10 +367,10 @@ class User
                 $index++;
             }
             fclose($fileForgot);
-            $_SESSION['resetPasswordNotify'] = "Token sai!";
+            $_SESSION['resetPasswordNotify'] = "Token or email is incorrect!";
             return false;
         } else {
-            $_SESSION['resetPasswordNotify'] = "File Forgot Password không tồn tại!";
+            $_SESSION['resetPasswordNotify'] = "File Forgot Password does not exist!";
             return false;
         }
     }
@@ -458,5 +457,3 @@ class User
         }
     }
 }
-
-?>

@@ -10,45 +10,45 @@
           onsubmit="return validateFormSignUp()">
 
         <div class="form-group">
-            <label for="name" class="form-label">Full name</label>
+            <label for="name" class="form-label">Full Name</label>
             <input type="text" class="form-input" id="name" placeholder="Eg: John Doe" name="fullName">
-            <p class="error" id="err_name">Tên không được để trống!</p>
+            <p class="error" id="err_name">Full Name is required!</p>
         </div>
 
         <div class="form-group">
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-input" id="email" placeholder="Eg: johndoe@email.com" name="email">
-            <p class="error" id="err_email">Email không được để trống!</p>
+            <p class="error" id="err_email">Email is required!</p>
         </div>
 
         <div class="form-group">
             <label for="username" class="form-label">User Name</label>
             <input type="text" class="form-input" id="username" placeholder="Eg: john" name="username">
-            <p class="error" id="err_username">Username không được để trống!</p>
+            <p class="error" id="err_username">Username is required!</p>
         </div>
 
         <div class="form-group">
             <label for="password" class="form-label">Password</label>
             <input type="password" class="form-input" id="password" placeholder="******" name="password">
-            <p class="error" id="err_password">Password không được để trống!</p>
+            <p class="error" id="err_password">Password is required!</p>
         </div>
 
         <div class="form-group">
             <label for="confirmPassword" class="form-label">Confirm Password</label>
             <input type="password" class="form-input" id="confirmPassword" placeholder="******" name="confirmPassword">
-            <p class="error" id="err_password_confirm">Phải giống password ở trên!</p>
+            <p class="error" id="err_password_confirm">password and confirm password must be match!</p>
         </div>
 
         <div class="form-group">
             <label for="birth" class="form-label">Birthday</label>
             <input type="date" class="form-input" id="birth" name="birth">
-            <p class="error" id="err_birth">Ngày sinh không được để trống!</p>
+            <p class="error" id="err_birth">Birthday is required!</p>
         </div>
 
         <div class="form-group">
             <label for="avatar" class="form-label">Avatar</label>
             <input type="file" class="form-input" id="avatar" name="avatar">
-            <p class="error" id="err_avatar">Avatar không được để trống!</p>
+            <p class="error" id="err_avatar">Avatar is required!</p>
         </div>
         <button type="submit" class="form-submit" name="signUp">Sign up</button>
     </form>

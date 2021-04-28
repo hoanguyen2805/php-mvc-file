@@ -1,7 +1,11 @@
-<form action="index.php?controller=users&action=formSearch" method="post">
+<h2 style="text-align: center; margin-top: 30px; color: red">Manage Users</h2>
+
+<form action="index.php?controller=users&action=formSearch" method="post" class="example"
+      style="margin:auto;max-width:400px">
     <input type="text" placeholder="Enter username or email" name="key">
-    <button type="submit" name="search">Search</button>
+    <button type="submit" name="search"><i class="fa fa-search"></i></button>
 </form>
+
 <div class="divTable blueTable">
     <div class="divTableHeading">
         <div class="divTableRow">
@@ -30,7 +34,7 @@
                     if ($user[6] != 1) {
                         ?>
                         <a href="index.php?controller=users&action=deleteUser&username=<?= $user[2] ?>"
-                           onClick="return confirm('are you sure you want to delete?');">DELETE</a>
+                           onClick="return confirm('Are you sure you want to delete this user?');">DELETE</a>
                         <?php
                     }
                     ?>
@@ -44,17 +48,13 @@
 <div class="blueTable outerTableFooter">
     <div class="tableFootStyle">
         <div class="links">
-            <a href="">&laquo;</a>
+            <!--            <a href="">&laquo;</a>-->
             <?php
             for ($i = 1; $i <= $totalPages; $i++) {
-                echo "<a href=\"index.php?controller=users&action=listUsers&page=$i\">$i</a>";
+                echo "&nbsp;<a href=\"index.php?controller=users&action=listUsers&page=$i\">$i</a>";
             }
             ?>
-            <!--            <a class="active" href="index.php?controller=users&action=listUsers&page=1">1</a>-->
-            <!--            -->
-            <!--            <a href="#">3</a>-->
-            <!--            <a href="#">4</a>-->
-            <a href="#">&raquo;</a>
+            <!--            <a href="#">&raquo;</a>-->
         </div>
     </div>
 </div>

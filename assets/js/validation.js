@@ -13,8 +13,6 @@ function validateFormSignUp() {
     let confirmPassword = document.forms["myForm"]["confirmPassword"].value;
     let birth = document.forms["myForm"]["birth"].value;
     let avatar = document.forms["myForm"]["avatar"].value;
-    // let regex = /^[a-zA-Z0-9]+$/;
-    // let regex = /^[A-Za-z0-9_\.]$/;
     let regex = /^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/;
     let check = true;
     if (fullName == "" || fullName == null) {
@@ -60,25 +58,17 @@ function validateFormSignUp() {
         document.getElementById("err_password_confirm").style.display = "none";
     }
     if (check == false) {
-        alert("Lỗi!");
         return check;
     }
 
     if (check) {
         if (!regex.test(fullName)) {
-            alert("Full Name không được chứa các ký tự đặc biệt!");
+            alert("Please do not enter following special characters in the Full Name field");
             check = false;
-            console.log(regex.test(fullName));
             return check;
         }
         if (!regex.test(username)) {
-            alert("Username không được chứa các ký tự đặc biệt!");
-            check = false;
-            console.log(regex.test(username));
-            return check;
-        }
-        if (!regex.test(password)) {
-            alert("Password không được chứa các ký tự đặc biệt!");
+            alert("Please do not enter following special characters in the Username field");
             check = false;
             return check;
         }

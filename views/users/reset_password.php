@@ -19,8 +19,8 @@ if (isset($_GET['token'])) {
       onsubmit="return validateFormResetPassword()">
 
     <input type="password" name="password" placeholder="New Password"/>
-    <p class="error" id="err_password_reset">password không được để trống!</p>
+    <p class="error" id="err_password_reset">password is required!</p>
     <input type="password" name="passwordConfirm" placeholder="Confirm Password"/>
-    <p class="error" id="err_password_reset_confirm">Phải giống password ở trên!</p>
+    <p class="error" id="err_password_reset_confirm">password and confirm password must be match!</p>
     <button type="submit" name="reset">Reset Password</button>
 </form>

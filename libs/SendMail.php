@@ -23,7 +23,7 @@ class SendMail
                     'allow_self_signed' => true
                 )
             );
-            $mail->CharSet =  "utf-8";
+            $mail->CharSet = "utf-8";
             $mail->IsSMTP();
             $mail->SMTPAuth = true;                         // Kích hoạt xác thực SMTP
             $mail->Username = 'nodejsangular02@gmail.com';  //mail gửi
@@ -31,8 +31,8 @@ class SendMail
             $mail->SMTPSecure = "ssl";
             $mail->Host = "smtp.gmail.com";                 // Chỉ định máy chủ SMTP chính và dự phòng
             $mail->Port = "465";                            // set the SMTP port for the GMAIL server
-            $mail->From='nodejsangular02@gmail.com';        //mail gửi
-            $mail->FromName='Admin Website';                //tên người gửi
+            $mail->From = 'nodejsangular02@gmail.com';        //mail gửi
+            $mail->FromName = 'Admin Website';                //tên người gửi
             $mail->addAddress($mailTo, $nameTo);            // Add a recipient
 
             //Content
@@ -47,6 +47,3 @@ class SendMail
         }
     }
 }
-
-
-?>
