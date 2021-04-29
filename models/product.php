@@ -261,4 +261,165 @@ class Product
             return null;
         }
     }
+
+    /**
+     *
+     * Hoa
+     * Created at 27-04-2021 15h10
+     * validate for form update
+     *
+     */
+    static function validateUpdateProduct($name, $price, $category)
+    {
+        $check = true;
+        $err = "";
+        if ($name == "") {
+            $err = $err . "Name is required. ";
+            $check = false;
+        }
+        $regex = preg_match('/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/', $name);
+        if (!$regex) {
+            $err = $err . "The name cannot contain special characters. ";
+            $check = false;
+        }
+        if ($price == "" || !is_numeric($price)) {
+            $err = $err . "Price is required. ";
+            $check = false;
+        }
+        if ($price < 0) {
+            $err = $err . "Price must be greater than or equal to 0. ";
+            $check = false;
+        }
+        if ($category == "") {
+            $err = $err . "Category is required. ";
+            $check = false;
+        }
+        if ($check == false) {
+            $_SESSION["updateProductNotify"] = $err;
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     *
+     * Hoa
+     * Created at 27-04-2021 15h20
+     * update product
+     *
+     */
+    static function updateProduct($name, $price, $category, $oldNameProduct)
+    {
+        echo "$name, $price, $category, ten cu: $oldNameProduct";
+        $oldProduct = Product::getProductByName($oldNameProduct);
+        $newProduct = $oldProduct;
+        $newProduct[0] = $name;
+        $newProduct[1] = $price;
+        $newProduct[2] = $category;
+        if (Product::isNewNameExists($name, $oldNameProduct)) {
+            $_SESSION["updateProductNotify"] = "New Name is already taken!";
+            return false;
+        }
+        if ($_FILES['image']['name'] == "") {
+            //not delete img
+            File::updateLine("assets/files/products.txt", $oldProduct, $newProduct);
+        } else {
+            //đelete img and update img
+            $urlImage = Product::updateImage();
+            if (!is_string($urlImage)) {
+                return false;
+            }
+            $newProduct[3] = $urlImage;
+            File::updateLine("assets/files/products.txt", $oldProduct, $newProduct);
+            File::deleteImage(trim($oldProduct[3]));
+        }
+        $_SESSION["updateProductNotify"] = "updated successfully";
+        return true;
+    }
+
+
+    /**
+     *
+     * Hoa
+     * Created at 27-04-2021 16h:00
+     * update image
+     *
+     */
+    static function updateImage()
+    {
+        $target_dir = "assets/images/products/";
+        //lấy đuôi file
+        $temp = explode(".", $_FILES["image"]["name"]);
+        //tạo tên file và đường dẫn
+        $target_file = $target_dir . round(microtime(true)) . uniqid() . '.' . end($temp);
+
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+        // Check if image file is a actual image or fake image
+        $check = getimagesize($_FILES["image"]["tmp_name"]);
+        if ($check !== false) {
+            $uploadOk = 1;
+        } else {
+            $_SESSION["updateProductNotify"] = "File is not an image!";
+            $uploadOk = 0;
+        }
+
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            $_SESSION["updateProductNotify"] = "File already exists!";
+            $uploadOk = 0;
+        }
+
+        // Check file size
+        if ($_FILES["image"]["size"] > 500000) {
+            $_SESSION["updateProductNotify"] = "Sorry, your file is too large!";
+            $uploadOk = 0;
+        }
+
+        // Allow certain file formats
+        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            && $imageFileType != "gif") {
+            $_SESSION["updateProductNotify"] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed!";
+            $uploadOk = 0;
+        }
+        if ($uploadOk == 0) {
+            return false;
+        } else {
+            if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                echo "The File " . htmlspecialchars(basename($_FILES["image"]["name"])) . " has been uploaded.";
+                return $target_file;
+            } else {
+                $_SESSION["updateProductNotify"] = "Sorry, there was an error uploading your file.";
+            }
+        }
+    }
+
+    /**
+     *
+     * Hoa
+     * Created at 27-04-2021 16h20
+     * checking new name exists
+     *
+     */
+    static function isNewNameExists($newName, $oldName)
+    {
+        if (file_exists('assets/files/products.txt')) {
+            $file = fopen("assets/files/products.txt", "r");
+            while (!feof($file)) {
+                $arr = explode(",", fgets($file));
+                if ($arr[0] == $oldName) {
+                    continue;
+                }
+                if ($arr[0] == $newName) {
+                    fclose($file);
+                    return true;
+                }
+            }
+            fclose($file);
+            return false;
+        } else {
+            return false;
+        }
+    }
 }

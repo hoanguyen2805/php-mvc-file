@@ -220,3 +220,48 @@ function validateFormAddProduct() {
         }
     }
 }
+
+
+/**
+ *
+ * Hoa
+ * Created at 27-04-2021 15h00
+ * validate for form update product
+ *
+ */
+function validateFormUpdateProduct() {
+    let name = document.forms["formUpdateProduct"]["name"].value;
+    let price = document.forms["formUpdateProduct"]["price"].value;
+    let category = document.forms["formUpdateProduct"]["category"].value;
+    let regex = /^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/;
+    let check = true;
+    if (name == "" || name == null) {
+        document.getElementById("err_name_product").style.display = "block";
+        check = false;
+    } else {
+        document.getElementById("err_name_product").style.display = "none";
+    }
+    if (price == "" || price == null || isNaN(price)) {
+        document.getElementById("err_price_product").style.display = "block";
+        check = false;
+    } else {
+        document.getElementById("err_price_product").style.display = "none";
+    }
+    if (category == "" || category == null) {
+        document.getElementById("err_select_product").style.display = "block";
+        check = false;
+    } else {
+        document.getElementById("err_select_product").style.display = "none";
+    }
+
+    if (check == false) {
+        return check;
+    }
+    if (check) {
+        if (!regex.test(name)) {
+            alert("Please do not enter following special characters in the name field");
+            check = false;
+            return check;
+        }
+    }
+}

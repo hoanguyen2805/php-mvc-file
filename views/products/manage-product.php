@@ -21,7 +21,9 @@
                         <img src="<?= $product[3] ?>" alt="" width="60px">
                     </div>
                     <div class="divTableCell"><?= $product[0] ?></div>
-                    <div class="divTableCell"><?= $product[1] ?></div>
+                    <div class="divTableCell">
+                        <?= number_format("$product[1]", 0, ",", " ")?> đ
+                    </div>
                     <?php
                     foreach ($categories as $category) {
                         if ($category[0] == $product[2]) {
@@ -34,6 +36,8 @@
                     <div class="divTableCell">
                         <a href="index.php?controller=products&action=delete&name=<?= $product[0] ?>"
                            onClick="return confirm('Are you sure you want to delete this product?');">DELETE</a>
+                        &nbsp;&nbsp;&nbsp;
+                        <a href="index.php?controller=products&action=update&name=<?= $product[0]?>">UPDATE</a>
                     </div>
                 </div>
                 <?php

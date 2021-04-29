@@ -149,4 +149,85 @@ class ProductsController extends BaseController
             header("location:index.php?controller=users&action=signIn");
         }
     }
+
+    /**
+     *
+     * Hoa
+     * Created at 27-04-2021 13h40
+     * go to page update product
+     *
+     */
+    public function update()
+    {
+        if (isset($_SESSION['user'])) {
+            $role = $_SESSION["role"];
+            if ($role == 1) {
+                if (isset($_GET['name'])) {
+                    $name = trim($_GET['name']);
+                    $product = Product::getProductByName($name);
+                    if ($product == null) {
+                        echo "<script>
+                            alert('Product not found!');
+                            window.location.href='index.php?controller=products&action=manageProduct';
+                      </script>";
+                    } else {
+                        $categories = Product::getCategories();
+                        $data = array(
+                            'product' => $product,
+                            'categories' => $categories
+                        );
+                        if (isset($_GET['notify'])) {
+                            $data['notify'] = $_GET['notify'];
+                        }
+                        $this->render('update', $data);
+                    }
+                } else {
+                    header("location:index.php?controller=products&action=manageProduct");
+                }
+            } else {
+                echo "<script>
+                            alert('You are not permitted to use this feature!');
+                            window.location.href='index.php?controller=users';
+                      </script>";
+            }
+        } else {
+            header("location:index.php?controller=users&action=signIn");
+        }
+    }
+
+    /**
+     *
+     * Hoa
+     * Created at 27-04-2021 14h40
+     * handling form update product
+     *
+     */
+    public function updateProductForm()
+    {
+        if (isset($_POST['updateProduct']) && isset($_GET['old'])) {
+            $name = trim($_POST['name']);
+            $price = trim($_POST['price']);
+            $category = trim($_POST['category']);
+            $oldNameProduct = trim($_GET['old']);
+            $notify = "";
+            if (Product::validateUpdateProduct($name, $price, $category)) {
+                $product = Product::updateProduct($name, $price, $category, $oldNameProduct);
+                if (isset($_SESSION["updateProductNotify"])) {
+                    $notify = $_SESSION["updateProductNotify"];
+                    unset($_SESSION["updateProductNotify"]);
+                }
+                if ($product) {
+                    echo "<script>
+                            alert('Update successful!');
+                            window.location.href='index.php?controller=products&action=manageProduct';
+                      </script>";
+                } else {
+                    header("location: index.php?controller=products&action=update&name=$oldNameProduct&notify=$notify");
+                }
+            }
+            header("");
+        } else {
+            header("location: index.php?controller=products&action=add");
+        }
+    }
 }

@@ -18,17 +18,17 @@
 </head>
 <body>
 <div class="topnav" id="myTopnav">
-    <a href="index.php?controller=products" class="active">Home</a>
-    <div class="dropdown">
+    <!--    <a href="index.php?controller=products" class="active">Home</a>-->
+    <!--    <div class="dropdown">
         <button class="dropbtn">Categories <i class="fa fa-caret-down"></i></button>
         <div class="dropdown-content">
             <?php
-            foreach ($categories as $category) {
-                echo "  <a href=\"index.php\">$category[1]</a>";
-            }
-            ?>
+    /*            foreach ($categories as $category) {
+                    echo "  <a href=\"index.php\">$category[1]</a>";
+                }
+                */ ?>
         </div>
-    </div>
+    </div>-->
     <?php
     if (!isset($_SESSION['user'])) {
         echo " <a href=\"index.php?controller=users&action=signIn\"><i class=\"fa fa-sign-in\" aria-hidden=\"true\"></i> Sign In</a>";
