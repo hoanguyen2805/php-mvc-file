@@ -13,29 +13,31 @@
     </div>
     <div class="divTableBody">
         <?php
-        foreach ($products as $product) {
-            ?>
-            <div class="divTableRow">
-                <div class="divTableCell">
-                    <img src="<?= $product[3] ?>" alt="" width="60px">
-                </div>
-                <div class="divTableCell"><?= $product[0] ?></div>
-                <div class="divTableCell"><?= $product[1] ?></div>
-                <?php
-                foreach ($categories as $category) {
-                    if ($category[0] == $product[2]) {
-                        ?>
-                        <div class="divTableCell"><?= $category[1] ?></div>
-                        <?php
-                    }
-                }
+        if ($products != null) {
+            foreach ($products as $product) {
                 ?>
-                <div class="divTableCell">
-                    <a href="index.php?controller=users&action=deleteUser&username=<?= $product[0] ?>"
-                       onClick="return confirm('Are you sure you want to delete this user?');">DELETE</a>
+                <div class="divTableRow">
+                    <div class="divTableCell">
+                        <img src="<?= $product[3] ?>" alt="" width="60px">
+                    </div>
+                    <div class="divTableCell"><?= $product[0] ?></div>
+                    <div class="divTableCell"><?= $product[1] ?></div>
+                    <?php
+                    foreach ($categories as $category) {
+                        if ($category[0] == $product[2]) {
+                            ?>
+                            <div class="divTableCell"><?= $category[1] ?></div>
+                            <?php
+                        }
+                    }
+                    ?>
+                    <div class="divTableCell">
+                        <a href="index.php?controller=products&action=delete&name=<?= $product[0] ?>"
+                           onClick="return confirm('Are you sure you want to delete this product?');">DELETE</a>
+                    </div>
                 </div>
-            </div>
-            <?php
+                <?php
+            }
         }
         ?>
     </div>

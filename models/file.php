@@ -61,14 +61,18 @@ class File
     static function getList($url)
     {
         if (file_exists($url)) {
-            $file = fopen($url, "r");
-            $list = array();
-            while (!feof($file)) {
-                $arr = explode(",", fgets($file));
-                array_push($list, $arr);
+            if (filesize($url) < 16 && empty(trim(file_get_contents($url)))) {
+                return null;
+            } else {
+                $file = fopen($url, "r");
+                $list = array();
+                while (!feof($file)) {
+                    $arr = explode(",", fgets($file));
+                    array_push($list, $arr);
+                }
+                fclose($file);
+                return $list;
             }
-            fclose($file);
-            return $list;
         } else {
             return null;
         }
@@ -88,5 +92,22 @@ class File
         $content = file_get_contents($url);
         $content = str_replace($oldLine, $newLine, $content);
         file_put_contents($url, $content);
+    }
+
+    /**
+     *
+     * Hoa
+     * Created at 27-04-2021 09h00
+     * delete file (image)
+     *
+     */
+    static function deleteImage($path)
+    {
+        if (file_exists($path)) {
+            unlink($path);
+//            echo 'File ' . $path . ' has been deleted';
+        } else {
+//            echo 'Could not delete ' . $path . ', file does not exist';
+        }
     }
 }

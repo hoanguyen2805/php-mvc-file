@@ -40,7 +40,10 @@ class ProductsController extends BaseController
                     $page = $_GET['page'];
                 }
                 $products = Product::paginate($page);
-                $size = count(Product::getProducts());
+                $size = 0;
+                if (Product::getProducts() != null) {
+                    $size = count(Product::getProducts());
+                }
                 $categories = Product::getCategories();
                 $totalPages = ceil($size / 5);
                 $data = array(
@@ -116,6 +119,34 @@ class ProductsController extends BaseController
             header("location: index.php?controller=products&action=add&notify=$notify");
         } else {
             header("location: index.php?controller=products&action=add");
+        }
+    }
+
+    /**
+     *
+     * Hoa
+     * Created at 27-04-2021 08h20
+     * just admin can delete product
+     *
+     */
+    public function delete()
+    {
+        if (isset($_SESSION['user'])) {
+            $role = $_SESSION["role"];
+            if ($role == 1) {
+                if (isset($_GET['name'])) {
+                    $name = trim($_GET['name']);
+                    Product::deleteProductByName($name);
+                }
+                header("location:index.php?controller=products&action=manageProduct");
+            } else {
+                echo "<script>
+                            alert('You are not permitted to use this feature!');
+                            window.location.href='index.php?controller=users';
+                      </script>";
+            }
+        } else {
+            header("location:index.php?controller=users&action=signIn");
         }
     }
 }

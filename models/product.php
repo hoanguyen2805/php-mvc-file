@@ -191,10 +191,71 @@ class Product
         return File::getList('assets/files/products.txt');
     }
 
+    /**
+     *
+     * Hoa
+     * Created at 26-04-2021 15h00
+     * paginate product
+     *
+     */
     static function paginate($page)
     {
         $index = ($page - 1) * 5;
         $products = Product::getProducts();
-        return array_slice($products, $index, 5);
+        if ($products == null) {
+            return null;
+        } else {
+            return array_slice($products, $index, 5);
+        }
+    }
+
+    /**
+     *
+     * Hoa
+     * Created at 27-04-2021 08h30
+     * delete product by name
+     *
+     */
+    static function deleteProductByName($name)
+    {
+        $product = Product::getProductByName($name);
+        if ($product != null) {
+            $list = Product::getProducts();
+            $size = count($list);
+            $index = 0;
+            foreach ($list as $item) {
+                if (trim($item[0]) == $name) {
+                    break;
+                }
+                $index++;
+            }
+            File::deleteLine('assets/files/products.txt', $product, $index, $size);
+            File::deleteImage(trim($product[3]));
+        }
+    }
+
+    /**
+     *
+     * Hoa
+     * Created at 27-04-2021 08h40
+     * get product by name
+     *
+     */
+    static function getProductByName($name)
+    {
+        if (file_exists('assets/files/products.txt')) {
+            $file = fopen("assets/files/products.txt", "r");
+            while (!feof($file)) {
+                $arr = explode(",", fgets($file));
+                if ($arr[0] == $name) {
+                    fclose($file);
+                    return $arr;
+                }
+            }
+            fclose($file);
+            return null;
+        } else {
+            return null;
+        }
     }
 }
