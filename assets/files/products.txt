@@ -1,0 +1,16 @@
+acer aspire a7,19000000,3,assets/images/products/161962375460897f4a4da2f.jpg
+apple macbook air 2017,18000000,3,assets/images/products/161962378060897f6397d55.jpg
+macbook pro 2020 m1,38000000,3,assets/images/products/161962384660897fa58e1ba.jpg
+dell vostro 235577,28900000,3,assets/images/products/161962386960897fbd43abb.jpg
+huawei t10s,5600000,2,assets/images/products/161962388760897fcedb837.jpg
+ipad 4 cellular,12000000,2,assets/images/products/161962391160897fe6be8d7.jpg
+ipad mini 7 inch,12000000,2,assets/images/products/16196239646089801c4604c.jpg
+ipad pro 12 inch,15960000,2,assets/images/products/161962399060898035b5e9e.jpg
+iphone 12,30000000,1,assets/images/products/16196240166089804f7fc21.jpg
+lenovo tab m10,3500000,2,assets/images/products/16196240396089806748335.jpg
+oppo a15,7500000,1,assets/images/products/16196240616089807ca1931.jpg
+oppo a74,7200000,1,assets/images/products/16196240776089808d66d79.jpg
+realmi 8,7600000,1,assets/images/products/16196240956089809f41bf7.jpg
+samsung galaxy tab a7,9900000,2,assets/images/products/1619624124608980bc41a5c.jpg
+xiaomi mi 11 lite,12000000,1,assets/images/products/1619624143608980cece6a4.jpg
+xiaomi redmi note 10,14000000,1,assets/images/products/1619624163608980e2d9d43.jpg

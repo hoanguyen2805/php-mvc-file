@@ -19,28 +19,30 @@
     </div>
     <div class="divTableBody">
         <?php
-        foreach ($listUsers as $user) {
-            ?>
-            <div class="divTableRow">
-                <div class="divTableCell">
-                    <img src="<?= $user[5] ?>" alt="" width="30px">
-                </div>
-                <div class="divTableCell"><?= $user[0] ?></div>
-                <div class="divTableCell"><?= $user[1] ?></div>
-                <div class="divTableCell"><?= $user[2] ?></div>
-                <div class="divTableCell"><?= $user[4] ?></div>
-                <div class="divTableCell">
-                    <?php
-                    if ($user[6] != 1) {
-                        ?>
-                        <a href="index.php?controller=users&action=deleteUser&username=<?= $user[2] ?>"
-                           onClick="return confirm('Are you sure you want to delete this user?');">DELETE</a>
+        if ($listUsers != null) {
+            foreach ($listUsers as $user) {
+                ?>
+                <div class="divTableRow">
+                    <div class="divTableCell">
+                        <img src="<?= $user[5] ?>" alt="" width="30px">
+                    </div>
+                    <div class="divTableCell"><?= $user[0] ?></div>
+                    <div class="divTableCell"><?= $user[1] ?></div>
+                    <div class="divTableCell"><?= $user[2] ?></div>
+                    <div class="divTableCell"><?= $user[4] ?></div>
+                    <div class="divTableCell">
                         <?php
-                    }
-                    ?>
+                        if ($user[6] != 1) {
+                            ?>
+                            <a href="index.php?controller=users&action=deleteUser&username=<?= $user[2] ?>"
+                               onClick="return confirm('Are you sure you want to delete this user?');">DELETE</a>
+                            <?php
+                        }
+                        ?>
+                    </div>
                 </div>
-            </div>
-            <?php
+                <?php
+            }
         }
         ?>
     </div>

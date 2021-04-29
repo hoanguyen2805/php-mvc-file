@@ -409,6 +409,7 @@ class User
                 $index++;
             }
             File::deleteLine("assets/files/users.txt", $user, $index, $size);
+            File::deleteImage(trim($user[5]));
         }
     }
 
@@ -423,7 +424,11 @@ class User
     {
         $index = ($page - 1) * 5;
         $listUsers = User::getUsersByString($key);
-        return array_slice($listUsers, $index, 5);
+        if ($listUsers == null) {
+            return null;
+        } else {
+            return array_slice($listUsers, $index, 5);
+        }
     }
 
     /**
@@ -437,18 +442,22 @@ class User
     {
         if ($key != "") {
             if (file_exists("assets/files/users.txt")) {
-                $file = fopen("assets/files/users.txt", "r");
-                $list = array();
-                while (!feof($file)) {
-                    $arr = explode(",", fgets($file));
-                    //không set != false được vì nếu tìm thấy chuỗi ở vị trí 0 thì nó trả về 0, mà false = 0 nên chạy sai
-                    //dùng !== để so sánh kiểu dữ liệu
-                    if (strpos($arr[1], $key) !== false || strpos($arr[2], $key) !== false) {
-                        array_push($list, $arr);
+                if (filesize("assets/files/users.txt") < 16 && empty(trim(file_get_contents("assets/files/users.txt")))) {
+                    return null;
+                } else {
+                    $file = fopen("assets/files/users.txt", "r");
+                    $list = array();
+                    while (!feof($file)) {
+                        $arr = explode(",", fgets($file));
+                        //không set != false được vì nếu tìm thấy chuỗi ở vị trí 0 thì nó trả về 0, mà false = 0 nên chạy sai
+                        //dùng !== để so sánh kiểu dữ liệu
+                        if (strpos($arr[1], $key) !== false || strpos($arr[2], $key) !== false) {
+                            array_push($list, $arr);
+                        }
                     }
+                    fclose($file);
+                    return $list;
                 }
-                fclose($file);
-                return $list;
             } else {
                 return null;
             }

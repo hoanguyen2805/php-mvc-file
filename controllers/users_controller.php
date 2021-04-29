@@ -298,9 +298,11 @@ class UsersController extends BaseController
                     $key = $_GET['key'];
                 }
                 $listUsers = User::paginate($page, trim($key));
-                $size = count(User::getUsersByString(trim($key)));
+                $size = 0;
+                if (User::getUsersByString(trim($key)) != null) {
+                    $size = count(User::getUsersByString(trim($key)));
+                }
                 $totalPages = ceil($size / 5);
-                //echo "size: $size, pages: $totalPages";
                 $data = array('listUsers' => $listUsers, 'totalPages' => $totalPages);
                 $this->render("list", $data);
             } else {
