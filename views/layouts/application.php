@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/style.css" type="text/css">
     <script src="assets/js/validation.js"></script>
-    <title>PHP-MVC</title>
+    <title>PHP-MVC-FILE</title>
 </head>
 <body>
 <div class="topnav" id="myTopnav">

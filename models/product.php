@@ -200,6 +200,9 @@ class Product
      */
     static function paginate($page)
     {
+        if ((int)$page == 0) {
+            $page = 1;
+        }
         $index = ($page - 1) * 5;
         $products = Product::getProducts();
         if ($products == null) {

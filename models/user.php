@@ -422,6 +422,9 @@ class User
      */
     static function paginate($page, $key)
     {
+        if ((int)$page == 0) {
+            $page = 1;
+        }
         $index = ($page - 1) * 5;
         $listUsers = User::getUsersByString($key);
         if ($listUsers == null) {

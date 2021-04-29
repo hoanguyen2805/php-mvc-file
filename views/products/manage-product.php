@@ -47,8 +47,19 @@
         <div class="links">
             <!--            <a href="">&laquo;</a>-->
             <?php
+            $page = 1;
+            if (isset($_GET['page'])) {
+                $page = $_GET['page'];
+                if ((int)$page == 0) {
+                    $page = 1;
+                }
+            }
             for ($i = 1; $i <= $totalPages; $i++) {
-                echo "&nbsp;<a href=\"index.php?controller=products&action=manageProduct&page=$i\">$i</a>";
+                if ($page == $i) {
+                    echo "&nbsp;<a href=\"index.php?controller=products&action=manageProduct&page=$i\" class='page-active'>$i</a>";
+                } else {
+                    echo "&nbsp;<a href=\"index.php?controller=products&action=manageProduct&page=$i\">$i</a>";
+                }
             }
             ?>
             <!--            <a href="#">&raquo;</a>-->
