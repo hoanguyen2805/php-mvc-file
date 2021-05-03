@@ -1,13 +1,14 @@
 <?php
 session_start();
 require_once('controllers/base_controller.php');
-require_once('models/user.php');
 
 class UsersController extends BaseController
 {
+
     function __construct()
     {
         $this->folder = 'users';
+        $this->userModel = $this->model('user');
     }
 
     /**
@@ -21,7 +22,7 @@ class UsersController extends BaseController
     {
         if (isset($_SESSION["user"])) {
             $username = $_SESSION["user"];
-            $user = User::getUserByUsername($username);
+            $user = $this->userModel->getUserByUsername($username);
             if ($user == null) {
                 header("location:index.php?controller=users&action=signIn");
             } else {
@@ -90,7 +91,7 @@ class UsersController extends BaseController
             $username = $_POST['username'];
             $password = md5($_POST['password']);
             $birthDay = $_POST['birth'];
-            User::signUp($fullName, $email, $username, $password, $birthDay);
+            $this->userModel->signUp($fullName, $email, $username, $password, $birthDay);
             $notify = "";
             if (isset($_SESSION["signUpNotify"])) {
                 $notify = $_SESSION["signUpNotify"];
@@ -138,7 +139,7 @@ class UsersController extends BaseController
         if (isset($_POST['login'])) {
             $username = $_POST['username'];
             $password = md5($_POST['password']);
-            $user = User::signIn($username, $password);
+            $user = $this->userModel->signIn($username, $password);
             if ($user) {
                 header("location:index.php?controller=users");
             } else {
@@ -200,7 +201,7 @@ class UsersController extends BaseController
     {
         if (isset($_POST['recoverPassword'])) {
             $email = $_POST["email"];
-            User::forgotPassword($email);
+            $this->userModel->forgotPassword($email);
             $notify = "";
             if (isset($_SESSION['forgotPasswordNotify'])) {
                 $notify = $_SESSION['forgotPasswordNotify'];
@@ -255,7 +256,7 @@ class UsersController extends BaseController
             $token = $_GET['token'];
             if (isset($_POST['reset'])) {
                 $newPassword = md5($_POST['password']);
-                $newPassword = User::resetPassword($email, $token, $newPassword);
+                $newPassword = $this->userModel->resetPassword($email, $token, $newPassword);
                 $notify = "";
                 if (isset($_SESSION['resetPasswordNotify'])) {
                     $notify = $_SESSION['resetPasswordNotify'];
@@ -297,10 +298,10 @@ class UsersController extends BaseController
                 if (!empty($_GET['key'])) {
                     $key = $_GET['key'];
                 }
-                $listUsers = User::paginate($page, trim($key));
+                $listUsers = $this->userModel->paginate($page, trim($key));
                 $size = 0;
-                if (User::getUsersByString(trim($key)) != null) {
-                    $size = count(User::getUsersByString(trim($key)));
+                if ($this->userModel->getUsersByString(trim($key)) != null) {
+                    $size = count($this->userModel->getUsersByString(trim($key)));
                 }
                 $totalPages = ceil($size / 5);
                 $data = array('listUsers' => $listUsers, 'totalPages' => $totalPages);
@@ -331,7 +332,7 @@ class UsersController extends BaseController
             if ($role == 1) {
                 if (isset($_GET['username'])) {
                     $username = $_GET['username'];
-                    User::deleteUserByUserName($username);
+                    $this->userModel->deleteUserByUserName($username);
                 }
                 header("location:index.php?controller=users&action=listUsers");
             } else {

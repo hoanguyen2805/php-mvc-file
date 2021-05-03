@@ -2,38 +2,8 @@
 include('libs/SendMail.php');
 require_once('models/file.php');
 
-class User
+class UserModel
 {
-    public $fullName;
-    public $email;
-    public $username;
-    public $password;
-    public $birthDay;
-    public $urlAvatar;
-    public $role;
-
-    /**
-     * User constructor.
-     * @param $fullName
-     * @param $email
-     * @param $username
-     * @param $password
-     * @param $birthDay
-     * @param $urlAvatar
-     * @param $role
-     */
-
-    public function __construct($fullName, $email, $username, $password, $birthDay, $urlAvatar, $role)
-    {
-        $this->fullName = $fullName;
-        $this->email = $email;
-        $this->username = $username;
-        $this->password = $password;
-        $this->birthDay = $birthDay;
-        $this->urlAvatar = $urlAvatar;
-        $this->role = $role;
-    }
-
     /**
      *
      * Hoa
@@ -41,17 +11,17 @@ class User
      * sign up
      *
      */
-    static function signUp($fullName, $email, $username, $password, $birthDay)
+    public function signUp($fullName, $email, $username, $password, $birthDay)
     {
-        if (User::isUsernameExists($username)) {
+        if ($this->isUsernameExists($username)) {
             $_SESSION["signUpNotify"] = "Username is already taken!";
             return false;
         }
-        if (User::isEmailExists($email)) {
+        if ($this->isEmailExists($email)) {
             $_SESSION["signUpNotify"] = "Email is already taken!";
             return false;
         }
-        $urlAvatar = User::uploadAvatar();
+        $urlAvatar = $this->uploadAvatar();
         if (!is_string($urlAvatar)) {
             return false;
         }
@@ -67,7 +37,7 @@ class User
      * checking username exists
      *
      */
-    static function isUsernameExists($username)
+    public function isUsernameExists($username)
     {
         if (file_exists('assets/files/users.txt')) {
             $fileUser = fopen("assets/files/users.txt", "r");
@@ -93,7 +63,7 @@ class User
      * checking email exists
      *
      */
-    static function isEmailExists($email)
+    public function isEmailExists($email)
     {
         if (file_exists('assets/files/users.txt')) {
             $fileUser = fopen("assets/files/users.txt", "r");
@@ -119,9 +89,9 @@ class User
      * upload avatar to images folder
      *
      */
-    static function uploadAvatar()
+    public function uploadAvatar()
     {
-        $target_dir = "assets/images/";
+        $target_dir = "assets/images/users";
         //lấy đuôi file
         $temp = explode(".", $_FILES["avatar"]["name"]);
         //tạo tên file và đường dẫn
@@ -176,7 +146,7 @@ class User
      * check account to sign in
      *
      */
-    static function signIn($username, $password)
+    public function signIn($username, $password)
     {
         if (trim($username) == "") {
             $_SESSION["signInNotify"] = "The username field is required!";
@@ -219,14 +189,14 @@ class User
      * check email for sending
      *
      */
-    static function forgotPassword($email)
+    public function forgotPassword($email)
     {
         if (trim($email) == "") {
             $_SESSION['forgotPasswordNotify'] = "Please enter your email!";
             return false;
         } else {
-            if (User::isEmailExists($email)) {
-                User::sendEmail($email);
+            if ($this->isEmailExists($email)) {
+                $this->sendEmail($email);
                 return true;
             } else {
                 $_SESSION['forgotPasswordNotify'] = "Email not found!";
@@ -242,7 +212,7 @@ class User
      * get user by email
      *
      */
-    static function getUserByEmail($email)
+    public function getUserByEmail($email)
     {
         if (file_exists('assets/files/users.txt')) {
             $fileUser = fopen("assets/files/users.txt", "r");
@@ -268,7 +238,7 @@ class User
      * get user by username
      *
      */
-    static function getUserByUsername($username)
+    public function getUserByUsername($username)
     {
         if (file_exists('assets/files/users.txt')) {
             $fileUser = fopen("assets/files/users.txt", "r");
@@ -295,9 +265,9 @@ class User
      * send email by phpmailer - save email and token into file forgotPassword.txt if sending email successfully
      *
      */
-    static function sendEmail($email)
+    public function sendEmail($email)
     {
-        $arr = User::getUserByEmail($email);
+        $arr = $this->getUserByEmail($email);
         $token = md5($email) . rand(10, 9999) . uniqid();
         /**
          * $expFormat = mktime(
@@ -312,7 +282,8 @@ class User
         $content .= "<p>We have received a request to re-issue your password recently.</p>";
         $content .= "<p>Please click on the following link to reset your password.</p>";
         $content .= "<b>$link</b>";
-        $sendMai = SendMail::send($title, $content, $arr[0], $email);
+        $send = new SendMail();
+        $sendMai = $send->send($title, $content, $arr[0], $email);
         if ($sendMai) {
             File::writeFile("assets/files/forgotPassword.txt", "$email,$token");
             $_SESSION['forgotPasswordNotify'] = "Check your email to reset password!";
@@ -328,11 +299,11 @@ class User
      * reset password
      *
      */
-    static function resetPassword($email, $token, $password)
+    public function resetPassword($email, $token, $password)
     {
-        if (User::isEmailAndTokenExist($email, $token)) {
-            if (User::isEmailExists($email)) {
-                $oldUser = User::getUserByEmail($email);
+        if ($this->isEmailAndTokenExist($email, $token)) {
+            if ($this->isEmailExists($email)) {
+                $oldUser = $this->getUserByEmail($email);
                 $newUser = $oldUser;
                 $newUser[3] = $password;
                 File::updateLine("assets/files/users.txt", $oldUser, $newUser);
@@ -351,7 +322,7 @@ class User
      * checking Email and token exist - file forgotPassword
      *
      */
-    static function isEmailAndTokenExist($email, $token)
+    public function isEmailAndTokenExist($email, $token)
     {
         if (file_exists('assets/files/forgotPassword.txt')) {
             $fileForgot = fopen("assets/files/forgotPassword.txt", "r");
@@ -383,7 +354,7 @@ class User
      * get list users
      *
      */
-    static function getListUsers()
+    public function getListUsers()
     {
         return File::getList("assets/files/users.txt");
     }
@@ -395,11 +366,11 @@ class User
      * delete user by username
      *
      */
-    static function deleteUserByUserName($username)
+    public function deleteUserByUserName($username)
     {
-        $user = User::getUserByUsername($username);
+        $user = $this->getUserByUsername($username);
         if ($user != null) {
-            $list = User::getListUsers(); //lay ra toan bo user
+            $list = $this->getListUsers(); //lay ra toan bo user
             $size = count($list);
             $index = 0;
             foreach ($list as $item) {
@@ -416,32 +387,11 @@ class User
     /**
      *
      * Hoa
-     * Created at 24-04-2021 16h20
-     * paginate with email | username
-     *
-     */
-    static function paginate($page, $key)
-    {
-        if ((int)$page == 0) {
-            $page = 1;
-        }
-        $index = ($page - 1) * 5;
-        $listUsers = User::getUsersByString($key);
-        if ($listUsers == null) {
-            return null;
-        } else {
-            return array_slice($listUsers, $index, 5);
-        }
-    }
-
-    /**
-     *
-     * Hoa
      * Created at 24-04-2021 14h30
      * get list users by comparing key with email or username
      *
      */
-    static function getUsersByString($key)
+    public function getUsersByString($key)
     {
         if ($key != "") {
             if (file_exists("assets/files/users.txt")) {
@@ -465,7 +415,29 @@ class User
                 return null;
             }
         } else {
-            return User::getListUsers();
+            return $this->getListUsers();
         }
     }
+
+    /**
+     *
+     * Hoa
+     * Created at 24-04-2021 16h20
+     * paginate with email | username
+     *
+     */
+    public function paginate($page, $key)
+    {
+        if ((int)$page == 0) {
+            $page = 1;
+        }
+        $index = ($page - 1) * 5;
+        $listUsers = $this->getUsersByString($key);
+        if ($listUsers == null) {
+            return null;
+        } else {
+            return array_slice($listUsers, $index, 5);
+        }
+    }
+
 }

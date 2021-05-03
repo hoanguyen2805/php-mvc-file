@@ -59,11 +59,15 @@
                     $page = 1;
                 }
             }
+            $key = "";
+            if(isset($_GET['key'])){
+                $key = $_GET['key'];
+            }
             for ($i = 1; $i <= $totalPages; $i++) {
                 if ($page == $i) {
-                    echo "&nbsp;<a href=\"index.php?controller=users&action=listUsers&page=$i\" class='page-active'>$i</a>";
+                    echo "&nbsp;<a href=\"index.php?controller=users&action=listUsers&page=$i&key=$key\" class='page-active'>$i</a>";
                 } else {
-                    echo "&nbsp;<a href=\"index.php?controller=users&action=listUsers&page=$i\">$i</a>";
+                    echo "&nbsp;<a href=\"index.php?controller=users&action=listUsers&page=$i&key=$key\">$i</a>";
                 }
 
             }

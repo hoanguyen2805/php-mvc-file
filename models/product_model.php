@@ -1,27 +1,8 @@
 <?php
 require_once('models/file.php');
 
-class Product
+class ProductModel
 {
-    public $name;
-    public $price;
-    public $category;
-    public $urlImage;
-
-    /**
-     * Product constructor.
-     * @param $name
-     * @param $price
-     * @param $category
-     * @param $urlImage
-     */
-    public function __construct($name, $price, $category, $urlImage)
-    {
-        $this->name = $name;
-        $this->price = $price;
-        $this->category = $category;
-        $this->urlImage = $urlImage;
-    }
 
     /**
      *
@@ -30,7 +11,7 @@ class Product
      * validate for form add product
      *
      */
-    static function validateProduct($name, $price, $category)
+    public function validateProduct($name, $price, $category)
     {
         $check = true;
         $err = "";
@@ -69,13 +50,13 @@ class Product
      * save product
      *
      */
-    static function saveProduct($name, $price, $category)
+    public function saveProduct($name, $price, $category)
     {
-        if (Product::isNameExists($name)) {
+        if ($this->isNameExists($name)) {
             $_SESSION["addProductNotify"] = "Name is already taken!";
             return false;
         }
-        $urlImage = Product::uploadImage();
+        $urlImage = $this->uploadImage();
         if (!is_string($urlImage)) {
             return false;
         }
@@ -91,7 +72,7 @@ class Product
      * checking name exists
      *
      */
-    static function isNameExists($name)
+    public function isNameExists($name)
     {
         if (file_exists('assets/files/products.txt')) {
             $file = fopen("assets/files/products.txt", "r");
@@ -116,7 +97,7 @@ class Product
      * upload image to images/products folder
      *
      */
-    static function uploadImage()
+    public function uploadImage()
     {
         $target_dir = "assets/images/products/";
         //lấy đuôi file
@@ -174,7 +155,7 @@ class Product
      * get categories
      *
      */
-    static function getCategories()
+    public function getCategories()
     {
         return File::getList('assets/files/categories.txt');
     }
@@ -186,7 +167,7 @@ class Product
      * get list product
      *
      */
-    static function getProducts()
+    public function getProducts()
     {
         return File::getList('assets/files/products.txt');
     }
@@ -198,13 +179,13 @@ class Product
      * paginate product
      *
      */
-    static function paginate($page)
+    public function paginate($page)
     {
         if ((int)$page == 0) {
             $page = 1;
         }
         $index = ($page - 1) * 5;
-        $products = Product::getProducts();
+        $products = $this->getProducts();
         if ($products == null) {
             return null;
         } else {
@@ -219,11 +200,11 @@ class Product
      * delete product by name
      *
      */
-    static function deleteProductByName($name)
+    public function deleteProductByName($name)
     {
-        $product = Product::getProductByName($name);
+        $product = $this->getProductByName($name);
         if ($product != null) {
-            $list = Product::getProducts();
+            $list = $this->getProducts();
             $size = count($list);
             $index = 0;
             foreach ($list as $item) {
@@ -244,7 +225,7 @@ class Product
      * get product by name
      *
      */
-    static function getProductByName($name)
+    public function getProductByName($name)
     {
         if (file_exists('assets/files/products.txt')) {
             $file = fopen("assets/files/products.txt", "r");
@@ -269,7 +250,7 @@ class Product
      * validate for form update
      *
      */
-    static function validateUpdateProduct($name, $price, $category)
+    public function validateUpdateProduct($name, $price, $category)
     {
         $check = true;
         $err = "";
@@ -308,15 +289,15 @@ class Product
      * update product
      *
      */
-    static function updateProduct($name, $price, $category, $oldNameProduct)
+    public function updateProduct($name, $price, $category, $oldNameProduct)
     {
         echo "$name, $price, $category, ten cu: $oldNameProduct";
-        $oldProduct = Product::getProductByName($oldNameProduct);
+        $oldProduct = $this->getProductByName($oldNameProduct);
         $newProduct = $oldProduct;
         $newProduct[0] = $name;
         $newProduct[1] = $price;
         $newProduct[2] = $category;
-        if (Product::isNewNameExists($name, $oldNameProduct)) {
+        if ($this->isNewNameExists($name, $oldNameProduct)) {
             $_SESSION["updateProductNotify"] = "New Name is already taken!";
             return false;
         }
@@ -325,7 +306,7 @@ class Product
             File::updateLine("assets/files/products.txt", $oldProduct, $newProduct);
         } else {
             //đelete img and update img
-            $urlImage = Product::updateImage();
+            $urlImage = $this->updateImage();
             if (!is_string($urlImage)) {
                 return false;
             }
@@ -345,7 +326,7 @@ class Product
      * update image
      *
      */
-    static function updateImage()
+    public function updateImage()
     {
         $target_dir = "assets/images/products/";
         //lấy đuôi file
@@ -402,7 +383,7 @@ class Product
      * checking new name exists
      *
      */
-    static function isNewNameExists($newName, $oldName)
+    public function isNewNameExists($newName, $oldName)
     {
         if (file_exists('assets/files/products.txt')) {
             $file = fopen("assets/files/products.txt", "r");
