@@ -25,8 +25,7 @@ class File
      *
      * Hoa
      * Created at 23-04-2021 13h40
-     * delete a line from form
-     * $url: đường dẫn file, $data: dòng cần xóa - dạng mảng, $index: vị trí dòng cần xóa, $size: kích thước của list
+     * delete a line from txt file
      *
      */
     static function deleteLine($url, $data, $index, $size)

@@ -24,7 +24,7 @@ class UsersController extends BaseController
             $username = $_SESSION["user"];
             $user = $this->userModel->getUserByUsername($username);
             if ($user == null) {
-                header("location:index.php?controller=users&action=signIn");
+                header("location:index.php?controller=users&action=sign-in");
             } else {
                 $data = array(
                     'fullName' => $user[0],
@@ -38,7 +38,7 @@ class UsersController extends BaseController
                 $this->render('index', $data);
             }
         } else {
-            header("location:index.php?controller=users&action=signIn");
+            header("location:index.php?controller=users&action=sign-in");
         }
     }
 
@@ -86,20 +86,22 @@ class UsersController extends BaseController
     public function signUpForm()
     {
         if (isset($_POST['signUp'])) {
-            $fullName = $_POST['fullName'];
-            $email = $_POST['email'];
-            $username = $_POST['username'];
-            $password = md5($_POST['password']);
-            $birthDay = $_POST['birth'];
-            $this->userModel->signUp($fullName, $email, $username, $password, $birthDay);
+            $fullName = trim($_POST['fullName']);
+            $email = trim($_POST['email']);
+            $username = trim($_POST['username']);
+            $password = trim(md5($_POST['password']));
+            $birthDay = trim($_POST['birth']);
             $notify = "";
+            if ($this->userModel->validateSignUp($fullName, $email, $username, $password, $birthDay)) {
+                $this->userModel->signUp($fullName, $email, $username, $password, $birthDay);
+            }
             if (isset($_SESSION["signUpNotify"])) {
                 $notify = $_SESSION["signUpNotify"];
                 unset($_SESSION["signUpNotify"]);
             }
-            header("location:index.php?controller=users&action=signUp&notify=$notify");
+            header("location:index.php?controller=users&action=sign-up&notify=$notify");
         } else {
-            header("location:index.php?controller=user&action=signUp");
+            header("location:index.php?controller=user&action=sign-up");
         }
     }
 
@@ -148,10 +150,10 @@ class UsersController extends BaseController
                     $notify = $_SESSION["signInNotify"];
                     unset($_SESSION["signInNotify"]);
                 }
-                header("location:index.php?controller=users&action=signIn&notify=$notify");
+                header("location:index.php?controller=users&action=sign-in&notify=$notify");
             }
         } else {
-            header("location:index.php?controller=users&action=signIn");
+            header("location:index.php?controller=users&action=sign-in");
         }
     }
 
@@ -165,7 +167,7 @@ class UsersController extends BaseController
     public function signOut()
     {
         session_destroy();
-        header("location:index.php?controller=users&action=signIn");
+        header("location:index.php?controller=users&action=sign-in");
     }
 
     /**
@@ -207,9 +209,9 @@ class UsersController extends BaseController
                 $notify = $_SESSION['forgotPasswordNotify'];
                 unset($_SESSION['forgotPasswordNotify']);
             }
-            header("location:index.php?controller=users&action=forgotPassword&notify=$notify");
+            header("location:index.php?controller=users&action=forgot-password&notify=$notify");
         } else {
-            header("location:index.php?controller=users&action=forgotPassword");
+            header("location:index.php?controller=users&action=forgot-password");
         }
     }
 
@@ -250,7 +252,7 @@ class UsersController extends BaseController
     {
         if (empty($_GET['key']) || empty($_GET['token'])) {
             $notify = "Token and email do not exist!";
-            header("location:index.php?controller=users&action=resetPassword&notify=$notify");
+            header("location:index.php?controller=users&action=reset-password&notify=$notify");
         } else {
             $email = $_GET['key'];
             $token = $_GET['token'];
@@ -265,13 +267,13 @@ class UsersController extends BaseController
                 if ($newPassword) {
                     echo "<script>
                             alert('Success! Please Log in');
-                            window.location.href='index.php?controller=users&action=signIn';
+                            window.location.href='index.php?controller=users&action=sign-in';
                           </script>";
                 } else {
-                    header("location:index.php?controller=users&action=resetPassword&key=$email&token=$token&notify=$notify");
+                    header("location:index.php?controller=users&action=reset-password&key=$email&token=$token&notify=$notify");
                 }
             } else {
-                header("location:index.php?controller=users&action=resetPassword&key=$email&token=$token");
+                header("location:index.php?controller=users&action=reset-password&key=$email&token=$token");
             }
         }
 
@@ -313,7 +315,7 @@ class UsersController extends BaseController
                       </script>";
             }
         } else {
-            header("location:index.php?controller=users&action=signIn");
+            header("location:index.php?controller=users&action=sign-in");
         }
 
     }
@@ -334,7 +336,7 @@ class UsersController extends BaseController
                     $username = $_GET['username'];
                     $this->userModel->deleteUserByUserName($username);
                 }
-                header("location:index.php?controller=users&action=listUsers");
+                header("location:index.php?controller=users&action=list-users");
             } else {
                 echo "<script>
                             alert('You are not permitted to use this feature!');
@@ -342,7 +344,7 @@ class UsersController extends BaseController
                       </script>";
             }
         } else {
-            header("location:index.php?controller=users&action=signIn");
+            header("location:index.php?controller=users&action=sign-in");
         }
     }
 
@@ -355,12 +357,25 @@ class UsersController extends BaseController
      */
     public function formSearch()
     {
-        if (isset($_POST['search'])) {
-            if ($_POST['key'] == "") {
-                header("location:index.php?controller=users&action=listUsers");
+        if (isset($_SESSION['user'])) {
+            $role = $_SESSION["role"];
+            if ($role == 1) {
+                if (isset($_POST['search'])) {
+                    if ($_POST['key'] == "") {
+                        header("location:index.php?controller=users&action=list-users");
+                    } else {
+                        header("location:index.php?controller=users&action=list-users&page=1&key=" . $_POST['key']);
+                    }
+                }
             } else {
-                header("location:index.php?controller=users&action=listUsers&page=1&key=" . $_POST['key']);
+                echo "<script>
+                            alert('You are not permitted to use this feature!');
+                            window.location.href='index.php?controller=users';
+                      </script>";
             }
+        } else {
+            header("location:index.php?controller=users&action=sign-in");
         }
+
     }
 }

@@ -7,6 +7,55 @@ class UserModel
     /**
      *
      * Hoa
+     * Created at 22-04-2021 09h40
+     * validate for form sign up
+     *
+     */
+    public function validateSignUp($fullName, $email, $username, $password, $birthDay)
+    {
+        $check = true;
+        $err = "";
+        if ($fullName == "") {
+            $err = $err . "Full Name is required. ";
+            $check = false;
+        }
+        $regex = preg_match('/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/', $fullName);
+        if (!$regex) {
+            $err = $err . "The Full Name cannot contain special characters. ";
+            $check = false;
+        }
+        if ($username == "") {
+            $err = $err . "Username is required. ";
+            $check = false;
+        }
+        $regex = preg_match('/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/', $username);
+        if (!$regex) {
+            $err = $err . "The Username cannot contain special characters. ";
+            $check = false;
+        }
+        if ($email == "") {
+            $err = $err . "Email is required.\n ";
+            $check = false;
+        }
+        if ($password == "") {
+            $err = $err . "Password is required.\n ";
+            $check = false;
+        }
+        if ($birthDay == "") {
+            $err = $err . "BirthDay is required.\n ";
+            $check = false;
+        }
+        if ($check == false) {
+            $_SESSION["signUpNotify"] = $err;
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     *
+     * Hoa
      * Created at 22-04-2021 8h30
      * sign up
      *
@@ -91,7 +140,7 @@ class UserModel
      */
     public function uploadAvatar()
     {
-        $target_dir = "assets/images/users";
+        $target_dir = "assets/images/users/";
         //lấy đuôi file
         $temp = explode(".", $_FILES["avatar"]["name"]);
         //tạo tên file và đường dẫn
@@ -275,7 +324,7 @@ class UserModel
          * );
          * $expDate = date("Y-m-d H:i:s", $expFormat);
          */
-        $link = "<a href='http://localhost:8081/php-mvc-file/index.php?controller=users&action=resetPassword&key="
+        $link = "<a href='http://localhost:8081/php-mvc-file/index.php?controller=users&action=reset-password&key="
             . $email . "&token=" . $token . "'>Click To Reset Your Password!</a>";
         $title = 'Reset Your Password!';     //chủ đề
         $content = "<h3> Dear " . $arr[0] . "</h3>";

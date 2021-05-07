@@ -1,6 +1,6 @@
-<h2 style="text-align: center; margin-top: 30px; color: red">Manage Users</h2>
+<h2 style="text-align: center; margin-top: 30px; color: red; font-size: 30px; font-weight: normal">Manage Users</h2>
 
-<form action="index.php?controller=users&action=formSearch" method="post" class="example"
+<form action="index.php?controller=users&action=form-search" method="post" class="example"
       style="margin:auto;max-width:400px">
     <input type="text" placeholder="Enter username or email" name="key">
     <button type="submit" name="search"><i class="fa fa-search"></i></button>
@@ -34,7 +34,7 @@
                         <?php
                         if ($user[6] != 1) {
                             ?>
-                            <a href="index.php?controller=users&action=deleteUser&username=<?= $user[2] ?>"
+                            <a href="index.php?controller=users&action=delete-user&username=<?= $user[2] ?>"
                                onClick="return confirm('Are you sure you want to delete this user?');">DELETE</a>
                             <?php
                         }
@@ -65,9 +65,9 @@
             }
             for ($i = 1; $i <= $totalPages; $i++) {
                 if ($page == $i) {
-                    echo "&nbsp;<a href=\"index.php?controller=users&action=listUsers&page=$i&key=$key\" class='page-active'>$i</a>";
+                    echo "&nbsp;<a href=\"index.php?controller=users&action=list-users&page=$i&key=$key\" class='page-active'>$i</a>";
                 } else {
-                    echo "&nbsp;<a href=\"index.php?controller=users&action=listUsers&page=$i&key=$key\">$i</a>";
+                    echo "&nbsp;<a href=\"index.php?controller=users&action=list-users&page=$i&key=$key\">$i</a>";
                 }
 
             }

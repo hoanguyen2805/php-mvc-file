@@ -8,20 +8,20 @@ $controllers = array(
     'users' => [
         'index',
         'error',
-        'signIn',
-        'signInForm',
-        'signUp',
-        'signUpForm',
-        'forgotPassword',
-        'forgotPasswordForm',
-        'resetPassword',
-        'resetPasswordForm',
-        'signOut',
-        'listUsers',
-        'deleteUser',
-        'formSearch',
+        'sign-in',
+        'sign-in-form',
+        'sign-up',
+        'sign-up-form',
+        'forgot-password',
+        'forgot-password-form',
+        'reset-password',
+        'reset-password-form',
+        'sign-out',
+        'list-users',
+        'delete-user',
+        'form-search',
     ],
-    'products' => ['index', 'manageProduct', 'add', 'addProductForm', 'update', 'updateProductForm', 'delete'],
+    'products' => ['index', 'manage-product', 'add', 'add-product-form', 'update-product-form', 'delete'],
 );
 
 /**
@@ -56,4 +56,13 @@ include_once('controllers/' . $controller . '_controller.php');
 
 $klass = str_replace('_', '', ucwords($controller, '_')) . 'Controller';
 $controller = new $klass;
-$controller->$action();
+
+$url = explode("-", $action);
+for ($i = 0; $i < count($url); $i++) {
+    if ($i != 0) {
+        $url[$i] = ucfirst($url[$i]);
+    }
+}
+$newAction = implode("", $url);
+
+$controller->$newAction();

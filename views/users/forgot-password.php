@@ -16,7 +16,7 @@
                         <div class="panel-body">
 
                             <form id="register-form" role="form" autocomplete="off" class="form" method="post"
-                                  action="index.php?controller=users&action=forgotPasswordForm"
+                                  action="index.php?controller=users&action=forgot-password-form"
                                   onsubmit="return validateFormForgotPassword()"
                                   name="forgotForm">
                                 <div class="form-group">

@@ -13,7 +13,7 @@ if (isset($_GET['token'])) {
 }
 ?>
 <form class="login-form" autocomplete="off"
-      action="index.php?controller=users&action=resetPasswordForm&key=<?= $key ?>&token=<?= $token ?>"
+      action="index.php?controller=users&action=reset-password-form&key=<?= $key ?>&token=<?= $token ?>"
       method="post"
       name="resetForm"
       onsubmit="return validateFormResetPassword()">

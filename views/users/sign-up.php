@@ -5,7 +5,7 @@
         echo "<h3 class='sign-up-error'>" . $notify . "</h3>";
     }
     ?>
-    <form action="index.php?controller=users&action=signUpForm" class="signup-form" autocomplete="off" method="post"
+    <form action="index.php?controller=users&action=sign-up-form" class="signup-form" autocomplete="off" method="post"
           enctype="multipart/form-data" name="myForm"
           onsubmit="return validateFormSignUp()">
 
@@ -52,6 +52,6 @@
         </div>
         <button type="submit" class="form-submit" name="signUp">Sign up</button>
     </form>
-    <p class="signup-already">Already have an account ? <a href="index.php?controller=users&action=signIn"
+    <p class="signup-already">Already have an account ? <a href="index.php?controller=users&action=sign-in"
                                                            class="signup-already-link">Login</a></p>
 </div>

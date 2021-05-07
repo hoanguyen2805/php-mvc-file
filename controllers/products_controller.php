@@ -46,11 +46,20 @@ class ProductsController extends BaseController
                 }
                 $categories = $this->productModel->getCategories();
                 $totalPages = ceil($size / 5);
+                // thong bao cho update
+                $notify = "";
+                if (isset($_SESSION["updateProductNotify"])) {
+                    $notify = $_SESSION["updateProductNotify"];
+                    unset($_SESSION["updateProductNotify"]);
+                }
                 $data = array(
                     'products' => $products,
                     'totalPages' => $totalPages,
-                    'categories' => $categories
+                    'categories' => $categories,
                 );
+                if (trim($notify) != "") {
+                    $data['notify'] = $notify;
+                }
                 $this->render('manage-product', $data);
             } else {
                 echo "<script>
@@ -59,7 +68,7 @@ class ProductsController extends BaseController
                       </script>";
             }
         } else {
-            header("location:index.php?controller=users&action=signIn");
+            header("location:index.php?controller=users&action=sign-in");
         }
 
     }
@@ -91,7 +100,7 @@ class ProductsController extends BaseController
                       </script>";
             }
         } else {
-            header("location:index.php?controller=users&action=signIn");
+            header("location:index.php?controller=users&action=sign-in");
         }
     }
 
@@ -104,21 +113,33 @@ class ProductsController extends BaseController
      */
     public function addProductForm()
     {
-        if (isset($_POST['addProduct'])) {
-            $name = trim($_POST['name']);
-            $price = trim($_POST['price']);
-            $category = trim($_POST['category']);
-            $notify = "";
-            if ($this->productModel->validateProduct($name, $price, $category)) {
-                $this->productModel->saveProduct($name, $price, $category);
+        if (isset($_SESSION['user'])) {
+            $role = $_SESSION["role"];
+            if ($role == 1) {
+                if (isset($_POST['addProduct'])) {
+                    $name = trim($_POST['name']);
+                    $price = trim($_POST['price']);
+                    $category = trim($_POST['category']);
+                    $notify = "";
+                    if ($this->productModel->validateProduct($name, $price, $category)) {
+                        $this->productModel->saveProduct($name, $price, $category);
+                    }
+                    if (isset($_SESSION["addProductNotify"])) {
+                        $notify = $_SESSION["addProductNotify"];
+                        unset($_SESSION["addProductNotify"]);
+                    }
+                    header("location: index.php?controller=products&action=add&notify=$notify");
+                } else {
+                    header("location: index.php?controller=products&action=add");
+                }
+            } else {
+                echo "<script>
+                            alert('You are not permitted to use this feature!');
+                            window.location.href='index.php?controller=users';
+                      </script>";
             }
-            if (isset($_SESSION["addProductNotify"])) {
-                $notify = $_SESSION["addProductNotify"];
-                unset($_SESSION["addProductNotify"]);
-            }
-            header("location: index.php?controller=products&action=add&notify=$notify");
         } else {
-            header("location: index.php?controller=products&action=add");
+            header("location:index.php?controller=users&action=sign-in");
         }
     }
 
@@ -138,7 +159,7 @@ class ProductsController extends BaseController
                     $name = trim($_GET['name']);
                     $this->productModel->deleteProductByName($name);
                 }
-                header("location:index.php?controller=products&action=manageProduct");
+                header("location:index.php?controller=products&action=manage-product");
             } else {
                 echo "<script>
                             alert('You are not permitted to use this feature!');
@@ -146,54 +167,10 @@ class ProductsController extends BaseController
                       </script>";
             }
         } else {
-            header("location:index.php?controller=users&action=signIn");
+            header("location:index.php?controller=users&action=sign-in");
         }
     }
 
-    /**
-     *
-     * Hoa
-     * Created at 27-04-2021 13h40
-     * go to page update product
-     *
-     */
-    public function update()
-    {
-        if (isset($_SESSION['user'])) {
-            $role = $_SESSION["role"];
-            if ($role == 1) {
-                if (isset($_GET['name'])) {
-                    $name = trim($_GET['name']);
-                    $product = $this->productModel->getProductByName($name);
-                    if ($product == null) {
-                        echo "<script>
-                            alert('Product not found!');
-                            window.location.href='index.php?controller=products&action=manageProduct';
-                      </script>";
-                    } else {
-                        $categories = $this->productModel->getCategories();
-                        $data = array(
-                            'product' => $product,
-                            'categories' => $categories
-                        );
-                        if (isset($_GET['notify'])) {
-                            $data['notify'] = $_GET['notify'];
-                        }
-                        $this->render('update', $data);
-                    }
-                } else {
-                    header("location:index.php?controller=products&action=manageProduct");
-                }
-            } else {
-                echo "<script>
-                            alert('You are not permitted to use this feature!');
-                            window.location.href='index.php?controller=users';
-                      </script>";
-            }
-        } else {
-            header("location:index.php?controller=users&action=signIn");
-        }
-    }
 
     /**
      *
@@ -204,30 +181,34 @@ class ProductsController extends BaseController
      */
     public function updateProductForm()
     {
-        if (isset($_POST['updateProduct']) && isset($_GET['old'])) {
-            $name = trim($_POST['name']);
-            $price = trim($_POST['price']);
-            $category = trim($_POST['category']);
-            $oldNameProduct = trim($_GET['old']);
-            $notify = "";
-            if ($this->productModel->validateUpdateProduct($name, $price, $category)) {
-                $product = $this->productModel->updateProduct($name, $price, $category, $oldNameProduct);
-                if (isset($_SESSION["updateProductNotify"])) {
-                    $notify = $_SESSION["updateProductNotify"];
-                    unset($_SESSION["updateProductNotify"]);
+        if (isset($_SESSION['user'])) {
+            $role = $_SESSION["role"];
+            if ($role == 1) {
+                if (isset($_POST['updateProduct']) && isset($_GET['old'])) {
+                    $name = trim($_POST['name']);
+                    $price = trim($_POST['price']);
+                    $category = trim($_POST['category']);
+                    $oldNameProduct = trim($_GET['old']);
+                    $notify = "";
+                    if ($this->productModel->validateUpdateProduct($name, $price, $category)) {
+                        $product = $this->productModel->updateProduct($name, $price, $category, $oldNameProduct);
+                        if ($product) {
+                            //echo "<script>
+                            //             alert('Update successful!');
+                            //      </script>";
+                        }
+                    }
                 }
-                if ($product) {
-                    echo "<script>
-                            alert('Update successful!');
-                            window.location.href='index.php?controller=products&action=manageProduct';
+                header("location: index.php?controller=products&action=manage-product");
+            } else {
+                echo "<script>
+                            alert('You are not permitted to use this feature!');
+                            window.location.href='index.php?controller=users';
                       </script>";
-                } else {
-                    header("location: index.php?controller=products&action=update&name=$oldNameProduct&notify=$notify");
-                }
             }
-            header("");
         } else {
-            header("location: index.php?controller=products&action=add");
+            header("location:index.php?controller=users&action=sign-in");
         }
+
     }
 }

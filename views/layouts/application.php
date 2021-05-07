@@ -31,27 +31,41 @@
     </div>-->
     <?php
     if (!isset($_SESSION['user'])) {
-        echo " <a href=\"index.php?controller=users&action=signIn\"><i class=\"fa fa-sign-in\" aria-hidden=\"true\"></i> Sign In</a>";
-        echo "<a href=\"index.php?controller=users&action=signUp\"><i class=\"fa fa-user-plus\" aria-hidden=\"true\"></i> Sign Up</a>";
+        echo " <a href=\"index.php?controller=users&action=sign-in\"><i class=\"fa fa-sign-in\" aria-hidden=\"true\"></i> Sign In</a>";
+        echo "<a href=\"index.php?controller=users&action=sign-up\"><i class=\"fa fa-user-plus\" aria-hidden=\"true\"></i> Sign Up</a>";
     } else {
         echo "<a href=\"index.php?controller=users\"><i class=\"fa fa-user\" aria-hidden=\"true\"></i> My Account</a>";
         if (isset($_SESSION['role'])) {
             if ($_SESSION['role'] == 1) {
-                echo "<a href=\"index.php?controller=users&action=listUsers\">
+                echo "<a href=\"index.php?controller=users&action=list-users\">
                         <i class=\"fa fa-users\" aria-hidden=\"true\"></i> Manage users
                       </a>";
-                echo "<a href=\"index.php?controller=products&action=manageProduct\">
+                echo "<a href=\"index.php?controller=products&action=manage-product\">
                         <i class=\"fa fa-product-hunt\" aria-hidden=\"true\"></i> Manage products
                       </a>";
             }
         }
-        echo "<a href=\"index.php?controller=users&action=signOut\"><i class=\"fa fa-sign-out\" aria-hidden=\"true\"></i> Sign Out</a>";
+        echo "<a href=\"index.php?controller=users&action=sign-out\"><i class=\"fa fa-sign-out\" aria-hidden=\"true\"></i> Sign Out</a>";
     }
     ?>
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
     </a>
+
+
 </div>
+<?php
+
+function active($currect_page)
+{
+    $url_array = explode('/', $_SERVER['REQUEST_URI']);
+    $url = end($url_array);
+    if ($currect_page == $url) {
+        echo 'active'; //class name in css
+    }
+}
+
+?>
 <?= @$content ?>
 </body>
 </html>

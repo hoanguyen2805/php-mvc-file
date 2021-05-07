@@ -5,7 +5,7 @@
         echo "<h3 class='sign-up-error'>" . $notify . "</h3>";
     }
     ?>
-    <form action="index.php?controller=products&action=addProductForm" class="signup-form" autocomplete="off"
+    <form action="index.php?controller=products&action=add-product-form" class="signup-form" autocomplete="off"
           method="post"
           enctype="multipart/form-data" name="formAddProduct"
           onsubmit="return validateFormAddProduct()">
