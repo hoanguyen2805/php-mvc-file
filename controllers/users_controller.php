@@ -18,7 +18,7 @@ class UsersController extends BaseController
      * go to page index
      *
      */
-    public function index()
+    public function info()
     {
         if (isset($_SESSION["user"])) {
             $username = $_SESSION["user"];
@@ -35,7 +35,7 @@ class UsersController extends BaseController
                     'urlAvatar' => $user[5],
                     'role' => $user[6]
                 );
-                $this->render('index', $data);
+                $this->render('info', $data);
             }
         } else {
             header("location:index.php?controller=users&action=sign-in");
@@ -64,7 +64,7 @@ class UsersController extends BaseController
     public function signUp()
     {
         if (isset($_SESSION["user"])) {
-            header("location:index.php?controller=users");
+            header("location:index.php?controller=users&action=info");
         } else {
             if (isset($_GET['notify'])) {
                 $data = array(
@@ -116,7 +116,7 @@ class UsersController extends BaseController
     public function signIn()
     {
         if (isset($_SESSION["user"])) {
-            header("location:index.php?controller=users");
+            header("location:index.php?controller=users&action=info");
         } else {
             if (isset($_GET['notify'])) {
                 $data = array(
@@ -143,7 +143,7 @@ class UsersController extends BaseController
             $password = md5($_POST['password']);
             $user = $this->userModel->signIn($username, $password);
             if ($user) {
-                header("location:index.php?controller=users");
+                header("location:index.php?controller=users&action=info");
             } else {
                 $notify = "";
                 if (isset($_SESSION["signInNotify"])) {
@@ -180,7 +180,7 @@ class UsersController extends BaseController
     public function forgotPassword()
     {
         if (isset($_SESSION["user"])) {
-            header("location:index.php?controller=users");
+            header("location:index.php?controller=users&action=info");
         } else {
             if (isset($_GET['notify'])) {
                 $data = array(

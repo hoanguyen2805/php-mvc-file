@@ -64,7 +64,7 @@ class ProductsController extends BaseController
             } else {
                 echo "<script>
                             alert('You are not permitted to use this feature!');
-                            window.location.href='index.php?controller=users';
+                            window.location.href='index.php?controller=users&action=info';
                       </script>";
             }
         } else {
@@ -96,7 +96,7 @@ class ProductsController extends BaseController
             } else {
                 echo "<script>
                             alert('You are not permitted to use this feature!');
-                            window.location.href='index.php?controller=users';
+                            window.location.href='index.php?controller=users&action=info';
                       </script>";
             }
         } else {
@@ -135,7 +135,7 @@ class ProductsController extends BaseController
             } else {
                 echo "<script>
                             alert('You are not permitted to use this feature!');
-                            window.location.href='index.php?controller=users';
+                            window.location.href='index.php?controller=users&action=info';
                       </script>";
             }
         } else {
@@ -163,7 +163,7 @@ class ProductsController extends BaseController
             } else {
                 echo "<script>
                             alert('You are not permitted to use this feature!');
-                            window.location.href='index.php?controller=users';
+                            window.location.href='index.php?controller=users&action=info';
                       </script>";
             }
         } else {
@@ -203,7 +203,7 @@ class ProductsController extends BaseController
             } else {
                 echo "<script>
                             alert('You are not permitted to use this feature!');
-                            window.location.href='index.php?controller=users';
+                            window.location.href='index.php?controller=users&action=info';
                       </script>";
             }
         } else {

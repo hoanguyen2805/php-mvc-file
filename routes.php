@@ -6,7 +6,7 @@
  */
 $controllers = array(
     'users' => [
-        'index',
+        'info',
         'error',
         'sign-in',
         'sign-in-form',

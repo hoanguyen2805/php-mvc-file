@@ -18,34 +18,49 @@
 </head>
 <body>
 <div class="topnav" id="myTopnav">
-    <!--    <a href="index.php?controller=products" class="active">Home</a>-->
-    <!--    <div class="dropdown">
-        <button class="dropbtn">Categories <i class="fa fa-caret-down"></i></button>
-        <div class="dropdown-content">
-            <?php
-    /*            foreach ($categories as $category) {
-                    echo "  <a href=\"index.php\">$category[1]</a>";
-                }
-                */ ?>
-        </div>
-    </div>-->
     <?php
-    if (!isset($_SESSION['user'])) {
-        echo " <a href=\"index.php?controller=users&action=sign-in\"><i class=\"fa fa-sign-in\" aria-hidden=\"true\"></i> Sign In</a>";
-        echo "<a href=\"index.php?controller=users&action=sign-up\"><i class=\"fa fa-user-plus\" aria-hidden=\"true\"></i> Sign Up</a>";
-    } else {
-        echo "<a href=\"index.php?controller=users\"><i class=\"fa fa-user\" aria-hidden=\"true\"></i> My Account</a>";
-        if (isset($_SESSION['role'])) {
-            if ($_SESSION['role'] == 1) {
-                echo "<a href=\"index.php?controller=users&action=list-users\">
-                        <i class=\"fa fa-users\" aria-hidden=\"true\"></i> Manage users
-                      </a>";
-                echo "<a href=\"index.php?controller=products&action=manage-product\">
-                        <i class=\"fa fa-product-hunt\" aria-hidden=\"true\"></i> Manage products
-                      </a>";
-            }
+    function active($currect_page)
+    {
+        $url_array = explode('/', $_SERVER['REQUEST_URI']);
+        $url = end($url_array);
+        if (strpos($url, $currect_page) !== false) {
+            echo 'active'; //class name in css
         }
-        echo "<a href=\"index.php?controller=users&action=sign-out\"><i class=\"fa fa-sign-out\" aria-hidden=\"true\"></i> Sign Out</a>";
+    }
+
+    if (!isset($_SESSION['user'])) {
+        ?>
+        <a href="index.php?controller=users&action=sign-in"
+           class="<?php active("index.php?controller=users&action=sign-in"); ?>">
+            <i class="fa fa-sign-in" aria-hidden="true"></i> Sign In
+        </a>
+        <a href="index.php?controller=users&action=sign-up"
+           class="<?php active("index.php?controller=users&action=sign-up"); ?>">
+            <i class="fa fa-user-plus" aria-hidden="true"></i> Sign Up
+        </a>
+        <?php
+    } else {
+        if (isset($_SESSION['role']) && $_SESSION['role'] == 1) {
+            ?>
+            <a href="index.php?controller=users&action=list-users"
+               class="<?php active("index.php?controller=users&action=list-users"); ?>">
+                <i class="fa fa-users" aria-hidden="true"></i> Manage users
+            </a>
+            <a href="index.php?controller=products&action=manage-product"
+               class="<?php active("index.php?controller=products&action=manage-product"); ?>">
+                <i class="fa fa-product-hunt" aria-hidden="true"></i> Manage products
+            </a>
+            <?php
+        }
+        ?>
+        <a href="index.php?controller=users&action=info"
+           class="<?php active("index.php?controller=users&action=info"); ?>">
+            <i class="fa fa-user" aria-hidden="true"></i> My Account
+        </a>
+        <a href="index.php?controller=users&action=sign-out">
+            <i class="fa fa-sign-out" aria-hidden="true"></i> Sign Out
+        </a>
+        <?php
     }
     ?>
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
@@ -54,18 +69,6 @@
 
 
 </div>
-<?php
-
-function active($currect_page)
-{
-    $url_array = explode('/', $_SERVER['REQUEST_URI']);
-    $url = end($url_array);
-    if ($currect_page == $url) {
-        echo 'active'; //class name in css
-    }
-}
-
-?>
 <?= @$content ?>
 </body>
 </html>
