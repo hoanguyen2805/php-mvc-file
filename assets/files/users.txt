@@ -1,5 +1,5 @@
 ADMINISTRATOR,admin@gmail.com,admin,81dc9bdb52d04dc20036dbd8313ed055,2021-04-10,assets/images/users/161959406160890b4d26385.png,1
-Ta Ba Phu,nhocconmoilon1995@gmail.com,baphu,81dc9bdb52d04dc20036dbd8313ed055,2021-04-14,assets/images/users/161959409360890b6d06ddd.png,0
+Ta Ba Phu,nhocconmoilon1995@gmail.com,baphu,c4ca4238a0b923820dcc509a6f75849b,2021-04-14,assets/images/users/161959409360890b6d06ddd.png,0
 Nguyen Van Hoa,hoanguyen280598@gmail.com,vanhoa,81dc9bdb52d04dc20036dbd8313ed055,2021-04-20,assets/images/users/161959412260890b89bfa15.png,0
 Dang Van Bao Hung,vanhoa280598@gmail.com,baohung,81dc9bdb52d04dc20036dbd8313ed055,2021-04-16,assets/images/users/161959415460890baa45291.png,0
 Huynh Anh Tuan,hoanguyen98.nta@gmail.com,anhtuan,81dc9bdb52d04dc20036dbd8313ed055,2021-04-09,assets/images/users/161959419360890bd0ceaac.png,0

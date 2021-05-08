@@ -1,6 +1,4 @@
 <?php
-require_once('connection.php');
-
 /**
  *
  * kiểm tra nếu tồn tại tham số controller thì get giá trị ra, không có thì gán mặc định controller = products, action = index
