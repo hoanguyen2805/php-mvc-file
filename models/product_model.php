@@ -291,7 +291,6 @@ class ProductModel
      */
     public function updateProduct($name, $price, $category, $oldNameProduct)
     {
-        echo "$name, $price, $category, ten cu: $oldNameProduct";
         $oldProduct = $this->getProductByName($oldNameProduct);
         $newProduct = $oldProduct;
         $newProduct[0] = $name;
